@@ -29,7 +29,8 @@ const initialState: DesktopState = {
   iconPositions: buildInitialIconPositions(),
   focusedWindowId: null,
   selectedIconId: null,
-  zCounter: 1,
+  // Start zCounter high so windows are rendered above icons by default
+  zCounter: 1000,
 };
 
 function reducer(state: DesktopState, action: DesktopAction): DesktopState {

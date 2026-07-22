@@ -6,9 +6,9 @@ import type { IconData } from '../../lib/desktopTypes';
 import { useDesktopContext } from './WindowManager';
 import Folder from './Folder';
 
-type Props = { data: IconData };
+type Props = { data: IconData; zIndex?: number };
 
-export const DesktopIcon: React.FC<Props> = ({ data }) => {
+export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
   const reduced = useReducedMotion();
   const { iconPositions, moveIcon, openWindow, selectIcon, selectedIconId } = useDesktopContext();
   const pos = iconPositions[data.id] ?? data.defaultPosition;
@@ -16,6 +16,13 @@ export const DesktopIcon: React.FC<Props> = ({ data }) => {
   const handleDragEnd = (_: any, info: any) => {
     const newPos = { x: pos.x + info.offset.x, y: pos.y + info.offset.y };
     moveIcon(data.id, newPos);
+    // Re-enable text selection after drag
+    try {
+      document.body.style.userSelect = '';
+      (document.body as any).style.webkitUserSelect = '';
+    } catch (e) {
+      /* ignore */
+    }
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -43,10 +50,19 @@ export const DesktopIcon: React.FC<Props> = ({ data }) => {
       initial={false}
       animate={{ x: pos.x, y: pos.y }}
       drag
+      onDragStart={() => {
+        try {
+          document.body.style.userSelect = 'none';
+          (document.body as any).style.webkitUserSelect = 'none';
+        } catch (e) {
+          /* ignore */
+        }
+      }}
       dragMomentum={false}
       onDragEnd={handleDragEnd}
       whileTap={{ scale: reduced ? 1 : 0.98 }}
-      className="absolute w-19 text-center cursor-grab focus:outline-none"
+      className="absolute w-19 text-center cursor-grab focus:outline-none desktop-icon"
+      style={{ zIndex }}
     >
       <div className="flex flex-col items-center select-none">
         <div className="relative h-16 w-16">

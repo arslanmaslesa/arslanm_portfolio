@@ -23,6 +23,13 @@ export const Window: React.FC<Props> = ({ win, children }) => {
   const handleDragEnd = (_: any, info: any) => {
     const newPos = { x: win.position.x + info.offset.x, y: win.position.y + info.offset.y };
     moveWindow(win.id, newPos);
+    // Re-enable text selection after drag
+    try {
+      document.body.style.userSelect = '';
+      (document.body as any).style.webkitUserSelect = '';
+    } catch (e) {
+      /* ignore */
+    }
   };
 
   const onTitlePointerDown = (e: React.PointerEvent) => {
@@ -54,6 +61,14 @@ export const Window: React.FC<Props> = ({ win, children }) => {
       variants={windowVariants}
       style={{ x: win.position.x, y: win.position.y, zIndex: win.zIndex, position: 'absolute' } as any}
       drag
+      onDragStart={() => {
+        try {
+          document.body.style.userSelect = 'none';
+          (document.body as any).style.webkitUserSelect = 'none';
+        } catch (e) {
+          /* ignore */
+        }
+      }}
       dragMomentum={false}
       dragListener={false}
       onDragEnd={handleDragEnd}
