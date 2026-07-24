@@ -12,7 +12,7 @@ const DesktopInner: React.FC = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f7f7f7] text-slate-950">
         <div className="absolute inset-0 pointer-events-none z-10">
-          <div className="absolute top-16 left-[66.666%] -translate-x-1/2 w-[328px] text-slate-900 pointer-events-auto z-30">
+          <div className="absolute top-20 left-[66.666%] -translate-x-1/2 w-[328px] text-slate-900 pointer-events-auto z-30">
           <div className="text-[1.25rem] font-medium tracking-[-0.01em] text-slate-950">Hi I’m Arslan.</div>
           <p className="mt-16 text-base leading-[1.6] text-slate-600">I’m a Product Designer based in Sarajevo. I’ve been obsessed with pixel perfection for the past 4 years.</p>
           <p className="mt-7 text-base leading-[1.6] text-slate-600">
