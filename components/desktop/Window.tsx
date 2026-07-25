@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import {
   motion,
   useDragControls,
@@ -16,6 +16,15 @@ type Props = {
   win: WindowData;
   children?: ReactNode;
 };
+
+const toolbarBlurStyle = {
+  backdropFilter: "blur(24px)",
+  WebkitBackdropFilter: "blur(24px)",
+  maskImage:
+    "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+  WebkitMaskImage:
+    "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+} as CSSProperties;
 
 export function Window({ win, children }: Props) {
   const { focusWindow, closeWindow, moveWindow, focusedWindowId } =
@@ -80,17 +89,28 @@ export function Window({ win, children }: Props) {
           position: "absolute",
         } as any
       }
-      className="group w-[min(92vw,800px)] h-[520px] flex flex-col overflow-hidden rounded-[28px] bg-white/80 p-3 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
+      className="relative h-[520px] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
     >
-      <WindowToolbar
-        title={win.title}
-        onClose={() => closeWindow(win.id)}
-        onPointerDown={(event) => dragControls.start(event as any)}
-      />
-
-      <main className="mt-3 flex-1 overflow-hidden group-hover:overflow-auto text-slate-700 scrollbar-thin scrollbar-thumb-slate-200">
+      <main className="absolute inset-0 z-0 overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200">
         {children}
       </main>
+
+      {/* Progressive blur: strong at the top, gone at the bottom */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12"
+        style={toolbarBlurStyle}
+      />
+
+      {/* Softer white-to-transparent fade */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]" />
+
+      <div className="absolute inset-x-3 top-3 z-20">
+        <WindowToolbar
+          title={win.title}
+          onClose={() => closeWindow(win.id)}
+          onPointerDown={(event) => dragControls.start(event as any)}
+        />
+      </div>
     </motion.div>
   );
 }

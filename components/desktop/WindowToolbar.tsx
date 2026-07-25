@@ -56,7 +56,14 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
     direction === "left" ? "M14.5 5L7.5 12L14.5 19" : "M9.5 5L16.5 12L9.5 19";
 
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      className="shrink-0"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d={path}
         stroke="currentColor"
@@ -70,7 +77,14 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
 
 function GridIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      className="shrink-0"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.5" />
       <rect x="14" y="3.5" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.5" />
       <rect x="3.5" y="14" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.5" />
@@ -81,7 +95,14 @@ function GridIcon() {
 
 function SortIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      className="shrink-0"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M7 9L12 4L17 9M7 15L12 20L17 15"
         stroke="currentColor"
@@ -95,7 +116,14 @@ function SortIcon() {
 
 function CloseIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      className="shrink-0"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M6.5 6.5L17.5 17.5M17.5 6.5L6.5 17.5"
         stroke="currentColor"
@@ -123,7 +151,7 @@ export function WindowToolbar({
               <ChevronIcon direction="left" />
             </ToolbarButton>
 
-            <div className="mx-0.5 h-5 w-px bg-slate-200" />
+            <div className="mx-0.5 h-4 w-px bg-slate-200" />
 
             <ToolbarButton variant="navigation" aria-label="Forward">
               <ChevronIcon direction="right" />
