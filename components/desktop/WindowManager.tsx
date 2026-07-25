@@ -48,8 +48,19 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
         };
       }
 
-      const z = state.zCounter + 1;
-      const defaultPos = { x: 120 + state.windows.length * 24, y: 120 + state.windows.length * 24 };
+        const z = state.zCounter + 1;
+        let defaultPos: Position;
+        // Center base for all windows, then nudge each subsequent window
+        if (typeof window !== 'undefined') {
+          const windowWidth = Math.min(Math.round(window.innerWidth * 0.92), 800);
+          const windowHeight = 520; // match Window component height
+          const baseX = Math.max(40, Math.round((window.innerWidth - windowWidth) / 2));
+          const baseY = Math.max(40, Math.round((window.innerHeight - windowHeight) / 2));
+          const nudge = state.windows.length * 24; // 0 for first, 24 for second, etc.
+          defaultPos = { x: baseX + nudge, y: baseY + nudge };
+        } else {
+          defaultPos = { x: 120 + state.windows.length * 24, y: 120 + state.windows.length * 24 };
+        }
       const newWin: WindowData = {
         id: action.payload.id,
         title: action.payload.title,

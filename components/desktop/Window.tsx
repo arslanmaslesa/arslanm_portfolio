@@ -17,15 +17,6 @@ type Props = {
   children?: ReactNode;
 };
 
-const toolbarBlurStyle = {
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  maskImage:
-    "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
-  WebkitMaskImage:
-    "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
-} as CSSProperties;
-
 export function Window({ win, children }: Props) {
   const { focusWindow, closeWindow, moveWindow, focusedWindowId } =
     useDesktopContext();
@@ -89,7 +80,7 @@ export function Window({ win, children }: Props) {
           position: "absolute",
         } as any
       }
-      className="relative h-[520px] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
+      className="relative h-[min(92vh,540px)] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
     >
       <main className="absolute inset-0 z-0 overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200">
         {children}

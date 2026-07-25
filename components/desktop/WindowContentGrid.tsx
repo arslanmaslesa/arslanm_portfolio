@@ -10,7 +10,7 @@ type TileProps = {
 };
 
 const Tile: React.FC<TileProps> = ({ thumbnail, title }) => (
-  <div style={{ height: 312, width: '100%', borderRadius: 16, overflow: 'hidden' }}>
+  <div style={{ height: 320, width: '100%', borderRadius: 16, overflow: 'hidden' }}>
     <img
       src={thumbnail}
       alt={title ?? "work thumbnail"}
