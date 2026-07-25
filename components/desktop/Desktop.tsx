@@ -4,6 +4,7 @@ import React from 'react';
 import { WindowManagerProvider, useDesktopContext } from './WindowManager';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
+import WindowContentGrid from './WindowContentGrid';
 
 const DesktopInner: React.FC = () => {
   const { icons, windows, selectIcon } = useDesktopContext();
@@ -95,10 +96,14 @@ const DesktopInner: React.FC = () => {
 
         {windows.map((w) => (
           <Window key={w.id} win={w}>
-            <div>
-              <h3 className="text-lg font-semibold">{w.title}</h3>
-              <p className="mt-2 text-sm text-slate-600">Placeholder content for {w.contentType}.</p>
-            </div>
+            {w.id === 'work' ? (
+              <WindowContentGrid />
+            ) : (
+              <div>
+                <h3 className="text-lg font-semibold">{w.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">Placeholder content for {w.contentType}.</p>
+              </div>
+            )}
           </Window>
         ))}
       </div>

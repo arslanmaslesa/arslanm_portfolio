@@ -1,98 +1,98 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
-import { motion, useDragControls, useReducedMotion } from 'framer-motion';
-import type { WindowData } from '../../lib/desktopTypes';
-import { useDesktopContext } from './WindowManager';
-import { windowVariants } from '../../lib/animations';
+import { useEffect, useRef, type ReactNode } from "react";
+import {
+  motion,
+  useDragControls,
+  useReducedMotion,
+  type PanInfo,
+} from "framer-motion";
+import type { WindowData } from "../../lib/desktopTypes";
+import { useDesktopContext } from "./WindowManager";
+import { windowVariants } from "../../lib/animations";
+import { WindowToolbar } from "./WindowToolbar";
 
-type Props = { win: WindowData; children?: React.ReactNode };
+type Props = {
+  win: WindowData;
+  children?: ReactNode;
+};
 
-export const Window: React.FC<Props> = ({ win, children }) => {
-  const { focusWindow, closeWindow, moveWindow, focusedWindowId } = useDesktopContext();
+export function Window({ win, children }: Props) {
+  const { focusWindow, closeWindow, moveWindow, focusedWindowId } =
+    useDesktopContext();
+
   const dragControls = useDragControls();
-  const reduced = useReducedMotion();
-  const ref = useRef<HTMLDivElement | null>(null);
+  const reducedMotion = useReducedMotion();
+  const windowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (focusedWindowId === win.id && ref.current) {
-      ref.current.focus();
+    if (focusedWindowId === win.id) {
+      windowRef.current?.focus();
     }
   }, [focusedWindowId, win.id]);
 
-  const handleDragEnd = (_: any, info: any) => {
-    const newPos = { x: win.position.x + info.offset.x, y: win.position.y + info.offset.y };
-    moveWindow(win.id, newPos);
-    // Re-enable text selection after drag
-    try {
-      document.body.style.userSelect = '';
-      (document.body as any).style.webkitUserSelect = '';
-    } catch (e) {
-      /* ignore */
-    }
+  const setTextSelection = (value: "none" | "") => {
+    document.body.style.userSelect = value;
+    document.body.style.setProperty("-webkit-user-select", value);
   };
 
-  const onTitlePointerDown = (e: React.PointerEvent) => {
-    // start dragging from titlebar
-    dragControls.start(e as any);
-  };
+  const handleDragEnd = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
+    moveWindow(win.id, {
+      x: win.position.x + info.offset.x,
+      y: win.position.y + info.offset.y,
+    });
 
-  const onClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    focusWindow(win.id);
-  };
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') closeWindow(win.id);
+    setTextSelection("");
   };
 
   return (
     <motion.div
+      ref={windowRef}
       role="dialog"
       aria-label={win.title}
       tabIndex={-1}
-      ref={ref}
-      onKeyDown={onKeyDown}
-      onMouseDown={onClick}
       initial="hidden"
-      animate={"visible"}
+      animate="visible"
       exit="exit"
-      custom={reduced}
+      custom={reducedMotion}
       variants={windowVariants}
-      style={{ x: win.position.x, y: win.position.y, zIndex: win.zIndex, position: 'absolute' } as any}
       drag
-      onDragStart={() => {
-        try {
-          document.body.style.userSelect = 'none';
-          (document.body as any).style.webkitUserSelect = 'none';
-        } catch (e) {
-          /* ignore */
-        }
-      }}
       dragMomentum={false}
       dragListener={false}
-      onDragEnd={handleDragEnd}
       dragControls={dragControls}
-      className="w-[520px] bg-white rounded-md shadow-lg ring-1 ring-slate-100 overflow-hidden"
+      onDragStart={() => setTextSelection("none")}
+      onDragEnd={handleDragEnd}
+      onMouseDown={(event) => {
+        event.stopPropagation();
+        focusWindow(win.id);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") closeWindow(win.id);
+      }}
+      style={
+        {
+          x: win.position.x,
+          y: win.position.y,
+          zIndex: win.zIndex,
+          position: "absolute",
+        } as any
+      }
+      className="group w-[min(92vw,800px)] h-[520px] flex flex-col overflow-hidden rounded-[28px] bg-white/80 p-3 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
     >
-      <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-100 cursor-default" onPointerDown={onTitlePointerDown}>
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-slate-400" />
-          <div className="text-sm font-medium text-slate-700">{win.title}</div>
-        </div>
-        <div>
-          <button
-            aria-label={`Close ${win.title}`}
-            onClick={() => closeWindow(win.id)}
-            className="text-slate-500 hover:text-slate-700"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
-      <div className="p-4 text-slate-700 min-h-[160px]">{children}</div>
+      <WindowToolbar
+        title={win.title}
+        onClose={() => closeWindow(win.id)}
+        onPointerDown={(event) => dragControls.start(event as any)}
+      />
+
+      <main className="mt-3 flex-1 overflow-hidden group-hover:overflow-auto text-slate-700 scrollbar-thin scrollbar-thumb-slate-200">
+        {children}
+      </main>
     </motion.div>
   );
-};
+}
 
 export default Window;
