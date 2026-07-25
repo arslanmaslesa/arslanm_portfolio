@@ -98,7 +98,7 @@ export function Window({ win, children }: Props) {
 
 
       {/* Softer white-to-transparent fade */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_10%,rgba(255,255,255,0.9)_40%,rgba(255,255,255,0.7)_60%,rgba(255,255,255,0)_100%)]" />
 
       <div className="absolute inset-x-3 top-3 z-20">
         <WindowToolbar
