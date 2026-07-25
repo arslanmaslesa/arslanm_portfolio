@@ -158,7 +158,7 @@ export function WindowToolbar({
             </ToolbarButton>
           </div>
 
-          <span className="ml-3 text-sm font-medium text-black">
+          <span className="ml-3 tracking-[-0.01em] font-medium text-black">
             {title}
           </span>
         </div>
