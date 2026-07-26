@@ -14,6 +14,7 @@ type DesktopContextValue = DesktopState & {
   moveIcon: (id: string, position: Position) => void;
   moveWindow: (id: string, position: Position) => void;
   selectIcon: (id: string | null) => void;
+  setWindowView: (id: string, viewMode: 'grid' | 'icons') => void;
 };
 
 const DesktopContext = createContext<DesktopContextValue | undefined>(undefined);
@@ -31,6 +32,12 @@ const initialState: DesktopState = {
   selectedIconId: null,
   // Start zCounter high so windows are rendered above icons by default
   zCounter: 1000,
+  // default view presets on first load
+  savedViewModes: {
+    work: 'grid',
+    about: 'icons',
+    playground: 'icons',
+  },
 };
 
 function reducer(state: DesktopState, action: DesktopAction): DesktopState {
@@ -55,20 +62,36 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
           const windowWidth = Math.min(Math.round(window.innerWidth * 0.92), 800);
           const windowHeight = 520; // match Window component height
           const baseX = Math.max(40, Math.round((window.innerWidth - windowWidth) / 2));
-          const baseY = Math.max(40, Math.round((window.innerHeight - windowHeight) / 2));
+          // shift the centered Y upward by `centerYOffset` pixels
+          const centerYOffset = 40; // push center up by 40px
+          const baseY = Math.max(20, Math.round((window.innerHeight - windowHeight) / 2) - centerYOffset);
           const nudge = state.windows.length * 24; // 0 for first, 24 for second, etc.
           defaultPos = { x: baseX + nudge, y: baseY + nudge };
         } else {
           defaultPos = { x: 120 + state.windows.length * 24, y: 120 + state.windows.length * 24 };
         }
+      // Determine view mode: prefer saved preset, otherwise use sensible default per contentType
+      const preset = state.savedViewModes && state.savedViewModes[action.payload.id];
+      const defaultViewForType =
+        action.payload.contentType === 'work' ? 'grid' : action.payload.contentType === 'about' || action.payload.contentType === 'playground' ? 'icons' : 'grid';
+
       const newWin: WindowData = {
         id: action.payload.id,
         title: action.payload.title,
         contentType: action.payload.contentType,
         position: defaultPos,
         zIndex: z,
+        viewMode: (preset as any) ?? (defaultViewForType as any),
       };
       return { ...state, windows: [...state.windows, newWin], focusedWindowId: newWin.id, zCounter: z };
+    }
+
+    case 'SET_WINDOW_VIEW': {
+      return {
+        ...state,
+        windows: state.windows.map((w) => (w.id === action.payload.id ? { ...w, viewMode: action.payload.viewMode } : w)),
+        savedViewModes: { ...(state.savedViewModes ?? {}), [action.payload.id]: action.payload.viewMode },
+      };
     }
     case 'CLOSE_WINDOW': {
       const windows = state.windows.filter((w) => w.id !== action.payload.id);
@@ -103,6 +126,7 @@ export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, dispatch] = useReducer(reducer, { ...initialState, iconPositions: {} });
 
   const openWindow = (id: string, title?: string, contentType?: string) => dispatch({ type: 'OPEN_WINDOW', payload: { id, title: title ?? id, contentType: contentType ?? id } });
+    const setWindowView = (id: string, viewMode: 'grid' | 'icons') => dispatch({ type: 'SET_WINDOW_VIEW', payload: { id, viewMode } });
   const closeWindow = (id: string) => dispatch({ type: 'CLOSE_WINDOW', payload: { id } });
   const focusWindow = (id: string) => dispatch({ type: 'FOCUS_WINDOW', payload: { id } });
   const moveIcon = (id: string, position: Position) => dispatch({ type: 'MOVE_ICON', payload: { id, position } });
@@ -118,6 +142,7 @@ export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({
     moveIcon,
     moveWindow,
     selectIcon,
+    setWindowView,
   };
 
   return <DesktopContext.Provider value={value}>{children}</DesktopContext.Provider>;

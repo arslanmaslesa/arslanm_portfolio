@@ -14,6 +14,7 @@ export type WindowData = {
   contentType: string;
   position: Position;
   zIndex: number;
+  viewMode?: 'grid' | 'icons';
 };
 
 export type DesktopState = {
@@ -22,6 +23,7 @@ export type DesktopState = {
   focusedWindowId: string | null;
   selectedIconId: string | null;
   zCounter: number;
+  savedViewModes?: Record<string, 'grid' | 'icons'>;
 };
 
 export type DesktopAction =
@@ -30,4 +32,5 @@ export type DesktopAction =
   | { type: 'FOCUS_WINDOW'; payload: { id: string } }
   | { type: 'MOVE_ICON'; payload: { id: string; position: Position } }
   | { type: 'MOVE_WINDOW'; payload: { id: string; position: Position } }
-  | { type: 'SELECT_ICON'; payload: { id: string | null } };
+  | { type: 'SELECT_ICON'; payload: { id: string | null } }
+  | { type: 'SET_WINDOW_VIEW'; payload: { id: string; viewMode: 'grid' | 'icons' } };

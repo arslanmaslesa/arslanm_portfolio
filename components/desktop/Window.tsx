@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useState } from "react";
 import {
   motion,
   useDragControls,
@@ -21,13 +22,21 @@ export function Window({ win, children }: Props) {
   const { focusWindow, closeWindow, moveWindow, focusedWindowId } =
     useDesktopContext();
 
+  const { setWindowView } = useDesktopContext();
+
   const dragControls = useDragControls();
   const reducedMotion = useReducedMotion();
   const windowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (focusedWindowId === win.id) {
-      windowRef.current?.focus();
+      // focus the window element but avoid scrolling the viewport
+      try {
+        (windowRef.current as HTMLElement | null)?.focus({ preventScroll: true } as FocusOptions);
+      } catch (e) {
+        // fallback for older browsers
+        windowRef.current?.focus();
+      }
     }
   }, [focusedWindowId, win.id]);
 
@@ -82,8 +91,8 @@ export function Window({ win, children }: Props) {
       }
       className="relative h-[min(92vh,540px)] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
     >
-      <main className="absolute inset-0 z-0 overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200">
-        {children}
+      <main className="absolute inset-0 z-0 overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200 flex">
+        <div className="flex-1 min-h-0">{children}</div>
       </main>
 
 
@@ -96,6 +105,8 @@ export function Window({ win, children }: Props) {
           title={win.title}
           onClose={() => closeWindow(win.id)}
           onPointerDown={(event) => dragControls.start(event as any)}
+          viewMode={win.viewMode ?? 'grid'}
+          onViewChange={(m) => setWindowView(win.id, m)}
         />
       </div>
     </motion.div>

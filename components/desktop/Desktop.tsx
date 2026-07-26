@@ -97,7 +97,7 @@ const DesktopInner: React.FC = () => {
         {windows.map((w) => (
           <Window key={w.id} win={w}>
             {w.id === 'work' ? (
-              <WindowContentGrid />
+              <WindowContentGrid mode={w.viewMode ?? 'grid'} />
             ) : (
               <div>
                 <h3 className="text-lg font-semibold">{w.title}</h3>

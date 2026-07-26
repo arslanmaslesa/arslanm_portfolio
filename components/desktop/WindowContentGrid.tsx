@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useReducedMotion } from 'framer-motion';
 import WindowGrid from "./WindowGrid";
+import Folder from "./Folder";
 import WORK_ITEMS from "../../content/work";
 
 type TileProps = {
@@ -20,13 +22,56 @@ const Tile: React.FC<TileProps> = ({ thumbnail, title }) => (
   </div>
 );
 
-const WindowContentGrid: React.FC = () => {
-  return (
-    <WindowGrid gap={12} className="w-full">
+const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons' }> = ({ mode = 'grid' }) => {
+  if (mode === 'icons') {
+    const reduced = useReducedMotion();
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    return (
+      <div ref={containerRef} className="w-full flex flex-wrap gap-6 h-full items-start content-start">
+        {WORK_ITEMS.map((item) => (
+          <motion.div
+            key={item.id}
+            className="w-28 text-center cursor-grab select-none"
+            drag
+            dragMomentum={false}
+            dragConstraints={containerRef}
+            onDragStart={() => {
+              try {
+                document.body.style.userSelect = 'none';
+                (document.body as any).style.webkitUserSelect = 'none';
+              } catch (e) {
+                /* ignore */
+              }
+            }}
+            onDragEnd={() => {
+              try {
+                document.body.style.userSelect = '';
+                (document.body as any).style.webkitUserSelect = '';
+              } catch (e) {
+                /* ignore */
+              }
+            }}
+            whileTap={{ scale: reduced ? 1 : 0.98 }}
+          >
+            <div className="mx-auto h-16 w-16">
+              <Folder className="w-full h-full" color="blue" />
+            </div>
+            <div className="mt-2 text-sm text-slate-700">{item.title}</div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
+    return (
+    <div className="w-full h-full">
+      <WindowGrid gap={12} className="w-full h-full">
       {WORK_ITEMS.map((item) => (
         <Tile key={item.id} thumbnail={item.thumbnail} title={item.title} />
       ))}
-    </WindowGrid>
+      </WindowGrid>
+    </div>
   );
 };
 export default WindowContentGrid;

@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import type {
   ButtonHTMLAttributes,
   PointerEvent as ReactPointerEvent,
@@ -15,6 +16,8 @@ type WindowToolbarProps = {
   title: string;
   onClose: () => void;
   onPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
+  viewMode?: 'grid' | 'icons';
+  onViewChange?: (mode: 'grid' | 'icons') => void;
 };
 
 const navigationSurfaceClass =
@@ -138,7 +141,32 @@ export function WindowToolbar({
   title,
   onClose,
   onPointerDown,
+  viewMode = 'grid',
+  onViewChange,
 }: WindowToolbarProps) {
+  const [open, setOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  const toggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpen((s) => !s);
+  };
+
+  const select = (mode: 'grid' | 'icons') => {
+    setOpen(false);
+    onViewChange?.(mode);
+  };
+
+  React.useEffect(() => {
+    const handler = (e: PointerEvent) => {
+      if (!open) return;
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', handler);
+    return () => document.removeEventListener('pointerdown', handler);
+  }, [open]);
   return (
     <header className="cursor-default" onPointerDown={onPointerDown}>
       <div className="flex items-center justify-between gap-3">
@@ -167,11 +195,49 @@ export function WindowToolbar({
           className="flex items-center gap-3"
           onPointerDown={(event) => event.stopPropagation()}
         >
-          <div className={actionSurfaceClass}>
-            <ToolbarButton variant="pill" aria-label="Change view">
-              <GridIcon />
-              <SortIcon />
-            </ToolbarButton>
+          <div className="relative" ref={containerRef}>
+            <div className={actionSurfaceClass}>
+              <ToolbarButton variant="pill" aria-label="Change view" onClick={toggle}>
+                <GridIcon />
+                <SortIcon />
+              </ToolbarButton>
+            </div>
+
+            {open && (
+              <div className="absolute right-0 mt-2 w-36 bg-white rounded-2xl z-30 p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08),0_1px_2px_rgba(15,23,42,0.04)]">
+                <button
+                  onClick={() => select('grid')}
+                  className="w-full flex items-center gap-1 px-1 py-2 rounded-xl hover:bg-[#f1f1f1]"
+                >
+                  <span className="w-5 flex justify-center text-slate-900">
+                    {viewMode === 'grid' ? (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    ) : (
+                      <span className="w-3" />
+                    )}
+                  </span>
+                  <span className="text-sm text-slate-700">View as grid</span>
+                </button>
+
+                <button
+                  onClick={() => select('icons')}
+                  className="w-full flex items-center gap-1 px-1 py-2 rounded-xl hover:bg-[#f1f1f1]"
+                >
+                  <span className="w-5 flex justify-center text-slate-900">
+                    {viewMode === 'icons' ? (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    ) : (
+                      <span className="w-3" />
+                    )}
+                  </span>
+                  <span className="text-sm text-slate-700">View as icons</span>
+                </button>
+              </div>
+            )}
           </div>
 
           <div className={actionSurfaceClass}>
