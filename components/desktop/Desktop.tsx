@@ -5,6 +5,8 @@ import { WindowManagerProvider, useDesktopContext } from './WindowManager';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
 import WindowContentGrid from './WindowContentGrid';
+import ABOUT_ITEMS from '../../content/about';
+import PLAYGROUND_ITEMS from '../../content/playground';
 
 const DesktopInner: React.FC = () => {
   const { icons, windows, selectIcon } = useDesktopContext();
@@ -96,8 +98,12 @@ const DesktopInner: React.FC = () => {
 
         {windows.map((w) => (
           <Window key={w.id} win={w}>
-            {w.id === 'work' ? (
-              <WindowContentGrid mode={w.viewMode ?? 'grid'} />
+            {w.id === 'work' || w.id === 'about' || w.id === 'playground' ? (
+              <WindowContentGrid
+                mode={w.viewMode ?? 'grid'}
+                items={w.id === 'work' ? undefined : w.id === 'about' ? ABOUT_ITEMS : PLAYGROUND_ITEMS}
+                source={w.id === 'work' ? 'work' : w.id === 'about' ? 'about' : 'playground'}
+              />
             ) : (
               <div>
                 <h3 className="text-lg font-semibold">{w.title}</h3>

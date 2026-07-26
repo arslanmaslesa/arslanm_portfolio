@@ -13,6 +13,18 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
   const { iconPositions, moveIcon, openWindow, selectIcon, selectedIconId } = useDesktopContext();
   const pos = iconPositions[data.id] ?? data.defaultPosition;
 
+  const draggingRef = React.useRef(false);
+
+  const handleDragStart = () => {
+    draggingRef.current = true;
+    try {
+      document.body.style.userSelect = 'none';
+      (document.body as any).style.webkitUserSelect = 'none';
+    } catch (e) {
+      /* ignore */
+    }
+  };
+
   const handleDragEnd = (_: any, info: any) => {
     const newPos = { x: pos.x + info.offset.x, y: pos.y + info.offset.y };
     moveIcon(data.id, newPos);
@@ -23,15 +35,24 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
     } catch (e) {
       /* ignore */
     }
+    // keep a short flag so click handlers can detect recent drag
+    window.setTimeout(() => {
+      draggingRef.current = false;
+    }, 50);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // ignore clicks that were the end of a drag
+    if (draggingRef.current) return;
     selectIcon(data.id);
+    // open on single click
+    openWindow(data.id, data.label, data.contentType);
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // kept for compatibility; single-click opens already
     openWindow(data.id, data.label, data.contentType);
   };
 
@@ -50,14 +71,7 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
       initial={false}
       animate={{ x: pos.x, y: pos.y }}
       drag
-      onDragStart={() => {
-        try {
-          document.body.style.userSelect = 'none';
-          (document.body as any).style.webkitUserSelect = 'none';
-        } catch (e) {
-          /* ignore */
-        }
-      }}
+      onDragStart={handleDragStart}
       dragMomentum={false}
       onDragEnd={handleDragEnd}
       whileTap={{ scale: reduced ? 1 : 0.98 }}
@@ -80,10 +94,7 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
             }
           />
         </div>
-        <div
-          className={`mt-2 text-base tracking-[-0.02em] ${selectedIconId === data.id ? 'font-semibold' : 'font-normal'} text-slate-700`}
-          style={{ transform: 'translateZ(0)', willChange: 'transform' }}
-        >
+        <div className="mt-2 text-base tracking-[-0.02em] font-normal text-slate-700" style={{ transform: 'translateZ(0)', willChange: 'transform' }}>
           {data.label}
         </div>
       </div>
