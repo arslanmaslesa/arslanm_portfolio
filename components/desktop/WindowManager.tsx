@@ -36,7 +36,7 @@ const initialState: DesktopState = {
   savedViewModes: {
     work: 'grid',
     about: 'icons',
-    playground: 'icons',
+    playground: 'grid',
   },
 };
 
