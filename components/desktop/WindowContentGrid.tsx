@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from 'framer-motion';
 import WindowGrid from "./WindowGrid";
 import Folder from "./Folder";
@@ -12,16 +13,92 @@ type TileProps = {
   title?: string;
 };
 
-const Tile: React.FC<TileProps> = ({ thumbnail, title }) => (
-  <div style={{ height: 320, width: '100%', borderRadius: 16, overflow: 'hidden' }}>
-    <img
-      src={thumbnail}
-      alt={title ?? "work thumbnail"}
-      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-      draggable={false}
-    />
-  </div>
-);
+const isVideo = (source: string) => /\.(mp4|webm|ogg)(?:$|\?)/i.test(source);
+
+const Tile: React.FC<TileProps> = ({ thumbnail, title }) => {
+  const video = isVideo(thumbnail);
+  const mediaRef = useRef<HTMLVideoElement | null>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!video || !mediaRef.current) return;
+
+    const media = mediaRef.current;
+    const scrollRoot = media.closest<HTMLElement>("[data-window-scroll]");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+
+        if (isVisible) {
+          setShouldLoadVideo(true);
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+          media.pause();
+        }
+      },
+      { root: scrollRoot, threshold: [0, 0.25] },
+    );
+
+    observer.observe(media);
+    return () => {
+      observer.disconnect();
+      media.pause();
+    };
+  }, [video]);
+
+  useEffect(() => {
+    const media = mediaRef.current;
+    if (!video || !media || !isVisible || !shouldLoadVideo) return;
+
+    void media.play().catch(() => {
+      // Some browsers can reject play until the source has buffered.
+    });
+  }, [isVisible, shouldLoadVideo, video]);
+
+  return (
+    <div
+      className="relative h-80 w-full overflow-hidden rounded-2xl bg-slate-100"
+      aria-label={title ?? "work thumbnail"}
+    >
+      {!isLoaded && (
+        <div
+          className="absolute inset-0 animate-pulse bg-[linear-gradient(110deg,#f1f5f9_8%,#e2e8f0_18%,#f1f5f9_33%)] bg-[length:200%_100%]"
+          aria-hidden="true"
+        />
+      )}
+
+      {video ? (
+        <video
+          ref={mediaRef}
+          className="h-full w-full object-cover"
+          src={shouldLoadVideo ? thumbnail : undefined}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onLoadedData={() => setIsLoaded(true)}
+          onCanPlay={(event) => {
+            if (isVisible) void event.currentTarget.play().catch(() => {});
+          }}
+          aria-label={title ?? "work video"}
+        />
+      ) : (
+        <Image
+          src={thumbnail}
+          alt={title ?? "work thumbnail"}
+          fill
+          sizes="(max-width: 800px) 60vw, 460px"
+          className="object-cover"
+          onLoad={() => setIsLoaded(true)}
+          draggable={false}
+        />
+      )}
+    </div>
+  );
+};
 
 const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[]; source?: 'work' | 'about' | 'playground' }> = ({ mode = 'grid', items, source = 'work' }) => {
   const { openWindow } = useDesktopContext();
@@ -78,12 +155,12 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[];
     );
   }
 
-    return (
-    <div className="w-full h-full">
-      <WindowGrid gap={12} className="w-full h-full">
-      {list.map((item) => (
-        <Tile key={item.id} thumbnail={item.thumbnail} title={item.title} />
-      ))}
+  return (
+    <div className="w-full pb-3">
+      <WindowGrid gap={12} className="w-full">
+        {list.map((item) => (
+          <Tile key={item.id} thumbnail={item.thumbnail} title={item.title} />
+        ))}
       </WindowGrid>
     </div>
   );
