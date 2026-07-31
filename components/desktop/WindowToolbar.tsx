@@ -18,6 +18,9 @@ type WindowToolbarProps = {
   onPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
   viewMode?: 'grid' | 'icons';
   onViewChange?: (mode: 'grid' | 'icons') => void;
+  onBack?: () => void;
+  onForward?: () => void;
+  showViewOptions?: boolean;
 };
 
 const navigationSurfaceClass =
@@ -143,6 +146,9 @@ export function WindowToolbar({
   onPointerDown,
   viewMode = 'grid',
   onViewChange,
+  onBack,
+  onForward,
+  showViewOptions = true,
 }: WindowToolbarProps) {
   const [open, setOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -175,13 +181,13 @@ export function WindowToolbar({
             className={navigationSurfaceClass}
             onPointerDown={(event) => event.stopPropagation()}
           >
-            <ToolbarButton variant="navigation" aria-label="Back">
+            <ToolbarButton variant="navigation" aria-label="Back" onClick={onBack} disabled={!onBack}>
               <ChevronIcon direction="left" />
             </ToolbarButton>
 
             <div className="mx-0.5 h-4 w-px bg-slate-200" />
 
-            <ToolbarButton variant="navigation" aria-label="Forward">
+            <ToolbarButton variant="navigation" aria-label="Forward" onClick={onForward} disabled={!onForward}>
               <ChevronIcon direction="right" />
             </ToolbarButton>
           </div>
@@ -195,7 +201,7 @@ export function WindowToolbar({
           className="flex items-center gap-3"
           onPointerDown={(event) => event.stopPropagation()}
         >
-          <div className="relative" ref={containerRef}>
+          {showViewOptions && <div className="relative" ref={containerRef}>
             <div className={actionSurfaceClass}>
               <ToolbarButton variant="pill" aria-label="Change view" onClick={toggle}>
                 <GridIcon />
@@ -238,7 +244,7 @@ export function WindowToolbar({
                 </button>
               </div>
             )}
-          </div>
+          </div>}
 
           <div className={actionSurfaceClass}>
             <ToolbarButton

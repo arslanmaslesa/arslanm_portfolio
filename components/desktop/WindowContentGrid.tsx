@@ -101,7 +101,7 @@ const Tile: React.FC<TileProps> = ({ thumbnail, title }) => {
 };
 
 const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[]; source?: 'work' | 'about' | 'playground' }> = ({ mode = 'grid', items, source = 'work' }) => {
-  const { openWindow } = useDesktopContext();
+  const { openWindow, openWorkProject } = useDesktopContext();
   const list = items ?? WORK_ITEMS;
   // Hooks must be called unconditionally to satisfy Rules of Hooks
   const reduced = useReducedMotion();
@@ -142,6 +142,10 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[];
             onClick={(e) => {
               e.stopPropagation();
               if (draggingRef.current) return;
+              if (source === 'work') {
+                openWorkProject(item.id, item.title ?? item.id);
+                return;
+              }
               openWindow(item.id, item.title ?? item.id, source);
             }}
           >
@@ -159,7 +163,21 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[];
     <div className="w-full pb-3">
       <WindowGrid gap={12} className="w-full">
         {list.map((item) => (
-          <Tile key={item.id} thumbnail={item.thumbnail} title={item.title} />
+          <button
+            key={item.id}
+            type="button"
+            className="block w-full cursor-pointer rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
+            aria-label={`Open ${item.title ?? item.id}`}
+            onClick={() => {
+              if (source === 'work') {
+                openWorkProject(item.id, item.title ?? item.id);
+                return;
+              }
+              openWindow(item.id, item.title ?? item.id, source);
+            }}
+          >
+            <Tile thumbnail={item.thumbnail} title={item.title} />
+          </button>
         ))}
       </WindowGrid>
     </div>

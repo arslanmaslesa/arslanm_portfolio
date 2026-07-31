@@ -15,6 +15,9 @@ export type WindowData = {
   position: Position;
   zIndex: number;
   viewMode?: 'grid' | 'icons';
+  activeProjectId?: string;
+  forwardProjectId?: string;
+  forwardProjectTitle?: string;
 };
 
 export type DesktopState = {
@@ -33,4 +36,7 @@ export type DesktopAction =
   | { type: 'MOVE_ICON'; payload: { id: string; position: Position } }
   | { type: 'MOVE_WINDOW'; payload: { id: string; position: Position } }
   | { type: 'SELECT_ICON'; payload: { id: string | null } }
-  | { type: 'SET_WINDOW_VIEW'; payload: { id: string; viewMode: 'grid' | 'icons' } };
+  | { type: 'SET_WINDOW_VIEW'; payload: { id: string; viewMode: 'grid' | 'icons' } }
+  | { type: 'OPEN_WORK_PROJECT'; payload: { projectId: string; title: string } }
+  | { type: 'RETURN_TO_WORK_FOLDER' }
+  | { type: 'GO_FORWARD_TO_WORK_PROJECT' };
