@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import { WindowManagerProvider, useDesktopContext } from './WindowManager';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
@@ -9,34 +8,16 @@ import WindowContentGrid from './WindowContentGrid';
 import ABOUT_ITEMS from '../../content/about';
 import PLAYGROUND_ITEMS from '../../content/playground';
 import WORK_ITEMS from '../../content/work';
+import { CaseStudyView } from './CaseStudy';
 
 const WorkCaseStudy: React.FC<{ projectId: string }> = ({ projectId }) => {
   const project = WORK_ITEMS.find((item) => item.id === projectId);
 
-  if (!project) return null;
+  if (!project?.caseStudy) {
+    return <p className="m-auto text-sm text-slate-500">This case study is coming soon.</p>;
+  }
 
-  return (
-    <article className="mx-auto w-full max-w-2xl px-3 py-8 sm:px-8">
-      <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">Case study</p>
-      <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-slate-950">{project.title}</h2>
-      <div className="mt-8 overflow-hidden rounded-2xl bg-slate-100">
-        {project.thumbnail.endsWith('.mp4') ? (
-          <video className="aspect-video w-full object-cover" src={project.thumbnail} controls playsInline />
-        ) : (
-          <Image
-            className="aspect-video w-full object-cover"
-            src={project.thumbnail}
-            alt={project.title ?? 'Project cover image'}
-            width={1280}
-            height={720}
-          />
-        )}
-      </div>
-      <p className="mt-8 text-base leading-7 text-slate-600">
-        The full case study for {project.title} will live here. Add its project story, process, and final outcome to this view.
-      </p>
-    </article>
-  );
+  return <CaseStudyView caseStudy={project.caseStudy} />;
 };
 
 const DesktopInner: React.FC = () => {
