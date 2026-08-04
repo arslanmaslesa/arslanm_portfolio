@@ -5,13 +5,35 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from 'framer-motion';
 import WindowGrid from "./WindowGrid";
 import Folder from "./Folder";
-import WORK_ITEMS, { WorkItem } from "../../content/work";
+import WORK_ITEMS from "../../content/work";
 import { useDesktopContext } from './WindowManager';
+import type { GridItem } from '../../lib/gridItemTypes';
 
 type TileProps = {
   thumbnail: string;
   title?: string;
 };
+
+type GridItemState = GridItem['interaction'];
+
+function LockIcon() {
+  return (
+    <svg
+      className="h-3.5 w-3.5 shrink-0"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M8 11V8.5C8 6.01472 10.0147 4 12.5 4C14.9853 4 17 6.01472 17 8.5V11M6.5 11H18.5C19.3284 11 20 11.6716 20 12.5V19.5C20 20.3284 19.3284 21 18.5 21H6.5C5.67157 21 5 20.3284 5 19.5V12.5C5 11.6716 5.67157 11 6.5 11Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const isVideo = (source: string) => /\.(mp4|webm|ogg)(?:$|\?)/i.test(source);
 
@@ -100,10 +122,21 @@ const Tile: React.FC<TileProps> = ({ thumbnail, title }) => {
   );
 };
 
-const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[]; source?: 'work' | 'about' | 'playground' }> = ({ mode = 'grid', items, source = 'work' }) => {
+const GridItemLabel: React.FC<{ title?: string; interaction?: GridItemState }> = ({ title, interaction }) => {
+  if (!title) return null;
+  const isLocked = interaction === 'locked';
+
+  return (
+    <div className="pointer-events-none absolute bottom-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-[8px] bg-white px-3 py-2 font-normal tracking-[-0.01em] text-black opacity-0 translate-y-1 shadow-[0_8px_20px_rgba(15,23,42,0.08),0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0">
+      {isLocked && <LockIcon />}
+      {title}
+    </div>
+  );
+};
+
+const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[]; source?: 'work' | 'about' | 'playground' }> = ({ mode = 'grid', items, source = 'work' }) => {
   const { openWindow, openWorkProject } = useDesktopContext();
   const list = items ?? WORK_ITEMS;
-  // Hooks must be called unconditionally to satisfy Rules of Hooks
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const draggingRef = React.useRef(false);
@@ -159,28 +192,62 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: WorkItem[];
     );
   }
 
+  const renderGridItem = (item: GridItem) => {
+    const interaction: GridItemState = item.interaction ?? 'clickable';
+    const isClickable = interaction === 'clickable';
+    const itemClassName = `group relative block w-full rounded-2xl text-left focus-visible:outline-none ${isClickable ? 'cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500/70' : 'cursor-default'}`;
+
+    const content = (
+      <>
+        <GridItemLabel title={item.title} interaction={interaction} />
+        <Tile thumbnail={item.thumbnail} title={item.title} />
+      </>
+    );
+
+    if (isClickable) {
+      return (
+        <motion.button
+          key={item.id}
+          className={itemClassName}
+          type="button"
+          aria-label={`Open ${item.title ?? item.id}`}
+          data-item-state={interaction}
+          whileHover={{ scale: reduced ? 1 : 0.985 }}
+          whileTap={{ scale: reduced ? 1 : 0.98 }}
+          transition={reduced ? { duration: 0 } : { type: 'tween', duration: 0.16, ease: 'easeOut' }}
+          onClick={() => {
+            if (source === 'work') {
+              openWorkProject(item.id, item.title ?? item.id);
+              return;
+            }
+            openWindow(item.id, item.title ?? item.id, source);
+          }}
+        >
+          {content}
+        </motion.button>
+      );
+    }
+
+    return (
+      <div
+        key={item.id}
+        className={itemClassName}
+        aria-label={item.title ?? item.id}
+        aria-disabled="true"
+        data-item-state={interaction}
+      >
+        {content}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full pb-3">
       <WindowGrid gap={12} className="w-full">
-        {list.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className="block w-full cursor-pointer rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
-            aria-label={`Open ${item.title ?? item.id}`}
-            onClick={() => {
-              if (source === 'work') {
-                openWorkProject(item.id, item.title ?? item.id);
-                return;
-              }
-              openWindow(item.id, item.title ?? item.id, source);
-            }}
-          >
-            <Tile thumbnail={item.thumbnail} title={item.title} />
-          </button>
-        ))}
+        {list.map((item) => renderGridItem(item))}
       </WindowGrid>
     </div>
   );
 };
+
 export default WindowContentGrid;

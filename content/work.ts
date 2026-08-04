@@ -15,10 +15,9 @@ export type CaseStudy = {
   modules: CaseStudyModule[];
 };
 
-export type WorkItem = {
-  id: string;
-  title?: string;
-  thumbnail: string; // public path to image, e.g. /work/thumb-1.png
+import type { GridItem } from '../lib/gridItemTypes';
+
+export type WorkItem = GridItem & {
   caseStudy?: CaseStudy;
 };
 
@@ -333,8 +332,9 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: 'project-6',
-    title: 'Project 6',
+    title: 'SaMed',
     thumbnail: '/work/thumb-6.png',
+    interaction: 'locked',
     caseStudy: {
       modules: [
         {
