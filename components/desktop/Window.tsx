@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { useState } from "react";
 import {
   motion,
@@ -39,6 +39,13 @@ export function Window({ win, children }: Props) {
       }
     }
   }, [focusedWindowId, win.id]);
+
+  useLayoutEffect(() => {
+    const scrollContainer = windowRef.current?.querySelector<HTMLElement>('[data-window-scroll]');
+    if (scrollContainer) {
+      scrollContainer.scrollTop = 0;
+    }
+  }, [win.activeProjectId, win.id]);
 
   const setTextSelection = (value: "none" | "") => {
     document.body.style.userSelect = value;

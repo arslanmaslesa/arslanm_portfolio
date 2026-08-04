@@ -25,13 +25,13 @@ export type WorkItem = {
 export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-1',
-    title: 'Project 1',
+    title: 'Well BP',
     thumbnail: '/work/thumb-1.mp4',
     caseStudy: {
       modules: [
         {
           type: 'intro',
-          title: 'Project 1 Overview',
+          title: 'Digital Agency Website',
           description: 'Project 1 explores a product experience focused on clarity, efficiency, and meaningful interaction design.',
           info: [
             { label: 'Role', value: 'Product Designer' },
@@ -39,12 +39,13 @@ export const WORK_ITEMS: WorkItem[] = [
             { label: 'Timeline', value: 'Add project dates' },
           ],
         },
-        { type: 'device', image: '/work/device.png', alt: 'Project 1 product preview' },
+        { type: 'device', image: '/work/well/hero.png', alt: 'Project 1 product preview' },
         {
           type: 'narrative',
           label: 'Challenge',
           text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
         },
+        { type: 'device', image: '/work/well/services.png', alt: 'Project 1 product preview' },
         {
           type: 'narrative',
           label: 'Process',
@@ -59,11 +60,6 @@ export const WORK_ITEMS: WorkItem[] = [
                 { src: '/work/test.png', alt: 'Project design artefact' },
               ],
             },
-            {
-              columns: [
-                { src: '/work/thumb-2.png', alt: 'Project interface preview', width: 1280, height: 720 },
-              ],
-            },
           ],
         },
         {
@@ -71,6 +67,9 @@ export const WORK_ITEMS: WorkItem[] = [
           label: 'Result',
           text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
         },
+        { type: 'device', image: '/work/well/work.png', alt: 'Project 1 product preview' },
+        { type: 'device', image: '/work/well/testimonial.png', alt: 'Project 1 product preview' },
+        { type: 'device', image: '/work/well/foot.png', alt: 'Project 1 product preview' },
       ],
     },
   },
@@ -91,44 +90,80 @@ export const WORK_ITEMS: WorkItem[] = [
             { label: 'Timeline', value: 'Add project dates' },
           ],
         },
-        { type: 'device', image: '/work/device.png', alt: 'Project 2 product preview' },
-        {
-          type: 'narrative',
-          label: 'Challenge',
-          text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
-        },
-        {
-          type: 'narrative',
-          label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
-        },
-        {
+        { 
           type: 'image-grid',
           rows: [
             {
               columns: [
-                { src: '/work/WellReport.png', alt: 'Project research artefact' },
-                { src: '/work/test.png', alt: 'Project design artefact' },
-              ],
-            },
-            {
-              columns: [
-                { src: '/work/thumb-2.png', alt: 'Project interface preview', width: 1280, height: 720 },
+                { src: '/work/appo/salon.png', alt: 'Project research artefact' },
+                { src: '/work/appo/appoicon.png', alt: 'Project design artefact' },
               ],
             },
           ],
         },
         {
           type: 'narrative',
+          label: 'Challenge',
+          text: 'Many beauty and wellness businesses still rely on manual booking methods, creating friction for both clients and staff. Appo was designed to simplify booking and business management in one platform.',
+        },
+        { type: 'device', image: '/work/appo/appoweb.png', alt: 'Project 1 product preview' },
+        {
+          type: 'narrative',
+          label: 'Process',
+          text: 'Through research, wireframing, prototyping, and iteration, the experience was refined into a simple and scalable solution for both clients and businesses.',
+        },
+        {
+          type: 'image-grid',
+          rows: [
+            {
+              columns: [
+                { src: '/work/appo/wire.png', alt: 'Project research artefact' },
+              ],
+            },
+            
+          ],
+        },
+        {
+          type: 'narrative',
           label: 'Result',
-          text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+          text: 'Appo delivers a seamless booking experience for clients and an intuitive management platform for businesses to handle appointments, staff, and daily operations.',
+        },
+        {
+          type: 'image-grid',
+          rows: [
+            {
+              columns: [
+                { src: '/work/appo/appo1.png', alt: 'Project research artefact' },               
+              ],
+            },
+            {
+              columns: [
+                { src: '/work/appo/biz.png', alt: 'Project research artefact' },
+              ],
+            },
+            {
+              columns: [
+                { src: '/work/appo/socials.png', alt: 'Project research artefact' },
+              ],
+            },
+            {
+              columns: [
+                { src: '/work/appo/booking.png', alt: 'Project research artefact' },
+              ],
+            },
+            {
+              columns: [
+                { src: '/work/appo/bill.png', alt: 'Project research artefact' },
+              ],
+            },
+          ],
         },
       ],
     },
   },
   {
     id: 'project-3',
-    title: 'Project 3',
+    title: 'Kupi Poklon',
     thumbnail: '/work/thumb-3.mp4',
     caseStudy: {
       modules: [
@@ -179,13 +214,13 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: 'project-4',
-    title: 'Project 4',
+    title: 'Universe',
     thumbnail: '/work/thumb-4.mp4',
     caseStudy: {
       modules: [
         {
           type: 'intro',
-          title: 'Project 4 Overview',
+          title: 'AI System Design',
           description: 'Project 4 presents a thoughtful interface system designed to support a broader product strategy and polished user journeys.',
           info: [
             { label: 'Role', value: 'Product Designer' },
@@ -193,11 +228,31 @@ export const WORK_ITEMS: WorkItem[] = [
             { label: 'Timeline', value: 'Add project dates' },
           ],
         },
-        { type: 'device', image: '/work/device.png', alt: 'Project 4 product preview' },
+        { 
+          type: 'image-grid',
+          rows: [
+            {
+              columns: [
+                { src: '/work/universe/three.png', alt: 'Project research artefact' },
+                { src: '/work/universe/app.png', alt: 'Project design artefact' },
+              ],
+            },
+          ],
+        },
         {
           type: 'narrative',
           label: 'Challenge',
           text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
+        },
+        {
+          type: 'image-grid',
+          rows: [
+            {
+              columns: [
+                { src: '/work/universe/notif.png', alt: 'Project research artefact' },
+              ],
+            },
+          ],
         },
         {
           type: 'narrative',
@@ -209,13 +264,7 @@ export const WORK_ITEMS: WorkItem[] = [
           rows: [
             {
               columns: [
-                { src: '/work/WellReport.png', alt: 'Project research artefact' },
-                { src: '/work/test.png', alt: 'Project design artefact' },
-              ],
-            },
-            {
-              columns: [
-                { src: '/work/thumb-2.png', alt: 'Project interface preview', width: 1280, height: 720 },
+                { src: '/work/universe/flow.png', alt: 'Project research artefact' },
               ],
             },
           ],
@@ -224,6 +273,21 @@ export const WORK_ITEMS: WorkItem[] = [
           type: 'narrative',
           label: 'Result',
           text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+        },
+        {
+          type: 'image-grid',
+          rows: [
+            {
+              columns: [
+                { src: '/work/universe/universe_two.png', alt: 'Project research artefact' },
+              ],
+            },
+            {
+              columns: [
+                { src: '/work/universe/three.png', alt: 'Project research artefact' },
+              ],
+            },
+          ],
         },
       ],
     },
