@@ -169,7 +169,7 @@ export const WORK_ITEMS: WorkItem[] = [
       modules: [
         {
           type: 'intro',
-          title: 'Project 3 Overview',
+          title: 'Gift Card Platform',
           description: 'Project 3 highlights a digital experience shaped around product storytelling, user clarity, and seamless interaction.',
           info: [
             { label: 'Role', value: 'Product Designer' },
@@ -177,7 +177,7 @@ export const WORK_ITEMS: WorkItem[] = [
             { label: 'Timeline', value: 'Add project dates' },
           ],
         },
-        { type: 'device', image: '/work/device.png', alt: 'Project 3 product preview' },
+        { type: 'device', image: '/work/poklon/hero.png', alt: 'Project 3 product preview' },
         {
           type: 'narrative',
           label: 'Challenge',
@@ -188,27 +188,16 @@ export const WORK_ITEMS: WorkItem[] = [
           label: 'Process',
           text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
         },
-        {
-          type: 'image-grid',
-          rows: [
-            {
-              columns: [
-                { src: '/work/WellReport.png', alt: 'Project research artefact' },
-                { src: '/work/test.png', alt: 'Project design artefact' },
-              ],
-            },
-            {
-              columns: [
-                { src: '/work/thumb-2.png', alt: 'Project interface preview', width: 1280, height: 720 },
-              ],
-            },
-          ],
-        },
+        
         {
           type: 'narrative',
           label: 'Result',
           text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
         },
+        { type: 'device', image: '/work/poklon/services.png', alt: 'Project 3 product preview' },
+        { type: 'device', image: '/work/poklon/steps.png', alt: 'Project 3 product preview' },
+        { type: 'device', image: '/work/poklon/category.png', alt: 'Project 3 product preview' },
+        { type: 'device', image: '/work/poklon/types.png', alt: 'Project 3 product preview' },
       ],
     },
   },
@@ -294,13 +283,13 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: 'project-5',
-    title: 'Project 5',
+    title: 'Pitaboom',
     thumbnail: '/work/thumb-5.png',
     caseStudy: {
       modules: [
         {
           type: 'intro',
-          title: 'Project 5 Overview',
+          title: 'Luxury Restaurant',
           description: 'Project 5 frames a product concept with a strong focus on user needs, visual clarity, and practical usability.',
           info: [
             { label: 'Role', value: 'Product Designer' },
@@ -308,38 +297,37 @@ export const WORK_ITEMS: WorkItem[] = [
             { label: 'Timeline', value: 'Add project dates' },
           ],
         },
-        { type: 'device', image: '/work/device.png', alt: 'Project 5 product preview' },
+        { type: 'device', image: '/work/pita/hero.png', alt: 'Project 5 product preview' },
         {
           type: 'narrative',
           label: 'Challenge',
           text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
         },
         {
-          type: 'narrative',
-          label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
-        },
-        {
           type: 'image-grid',
           rows: [
             {
               columns: [
-                { src: '/work/WellReport.png', alt: 'Project research artefact' },
-                { src: '/work/test.png', alt: 'Project design artefact' },
-              ],
-            },
-            {
-              columns: [
-                { src: '/work/thumb-2.png', alt: 'Project interface preview', width: 1280, height: 720 },
+                { src: '/work/pita/figma.png', alt: 'Project research artefact' },
               ],
             },
           ],
         },
         {
           type: 'narrative',
+          label: 'Process',
+          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
+        },
+        
+        {
+          type: 'narrative',
           label: 'Result',
           text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
         },
+        { type: 'device', image: '/work/pita/description.png', alt: 'Project 5 product preview' },
+        { type: 'device', image: '/work/pita/menu.png', alt: 'Project 5 product preview' },
+        { type: 'device', image: '/work/pita/story.png', alt: 'Project 5 product preview' },
+        { type: 'device', image: '/work/pita/faq.png', alt: 'Project 5 product preview' },
       ],
     },
   },
