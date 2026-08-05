@@ -216,7 +216,10 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
                   <Folder className="w-full h-full" color="blue" />
                 )}
               </div>
-              <div className="mt-2 text-sm text-slate-700">{item.title}</div>
+              <div className="mt-2 flex items-center justify-center gap-1 text-sm text-slate-700">
+                {interaction === 'locked' && <LockIcon />}
+                <span>{item.title}</span>
+              </div>
             </motion.div>
           );
         })}

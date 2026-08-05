@@ -3,9 +3,9 @@ import type { GridItem } from '../lib/gridItemTypes';
 export type WorkItem = GridItem;
 
 export const ABOUT_ITEMS: WorkItem[] = [
-  { id: 'about-1', title: 'Me', gridThumbnail: '/about/thumb-1.png', iconThumbnail: '/about/me.png' },
-  { id: 'about-2', title: 'Certifications', gridThumbnail: '/about/thumb-2.png' },
-  { id: 'about-3', title: 'Inspirations', gridThumbnail: '/about/thumb-3.png' },
+  { id: 'about-1', title: 'Me', gridThumbnail: '/about/thumb-1.png', iconThumbnail: '/about/me.png', interaction: 'locked' },
+  { id: 'about-2', title: 'Certifications', gridThumbnail: '/about/thumb-2.png', interaction: 'locked' },
+  { id: 'about-3', title: 'Inspirations', gridThumbnail: '/about/thumb-3.png', interaction: 'locked' },
   { id: 'about-4', title: 'Tools', gridThumbnail: '/about/thumb-4.png'},
 ];
 
