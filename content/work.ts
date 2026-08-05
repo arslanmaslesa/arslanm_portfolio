@@ -25,7 +25,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-1',
     title: 'Well BP',
-    thumbnail: '/work/thumb-1.mp4',
+    gridThumbnail: '/work/thumb-1.mp4',
+    iconThumbnail: '/work/thumb-1.mp4',
     caseStudy: {
       modules: [
         {
@@ -75,7 +76,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-2',
     title: 'Appo',
-    thumbnail: '/work/thumb-2.png',
+    gridThumbnail: '/work/thumb-2.png',
+    iconThumbnail: '/work/thumb-2.png',
     // Case studies are composed from modules, so every project can use a different order and set of sections.
     caseStudy: {
       modules: [
@@ -163,7 +165,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-3',
     title: 'Kupi Poklon',
-    thumbnail: '/work/thumb-3.mp4',
+    gridThumbnail: '/work/thumb-3.mp4',
+    iconThumbnail: '/work/thumb-3.mp4',
     caseStudy: {
       modules: [
         {
@@ -203,7 +206,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-4',
     title: 'Universe',
-    thumbnail: '/work/thumb-4.mp4',
+    gridThumbnail: '/work/thumb-4.mp4',
+    iconThumbnail: '/work/thumb-4.mp4',
     caseStudy: {
       modules: [
         {
@@ -283,7 +287,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-5',
     title: 'Pitaboom',
-    thumbnail: '/work/thumb-5.png',
+    gridThumbnail: '/work/thumb-5.png',
+    iconThumbnail: '/work/thumb-5.png',
     caseStudy: {
       modules: [
         {
@@ -333,7 +338,8 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'project-6',
     title: 'SaMed',
-    thumbnail: '/work/thumb-6.png',
+    gridThumbnail: '/work/thumb-6.png',
+    iconThumbnail: '/work/thumb-6.png',
     interaction: 'locked',
     caseStudy: {
       modules: [

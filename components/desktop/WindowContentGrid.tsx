@@ -16,6 +16,9 @@ type TileProps = {
 
 type GridItemState = GridItem['interaction'];
 
+const getGridThumbnail = (item: GridItem) => item.gridThumbnail;
+const getIconThumbnail = (item: GridItem) => item.iconThumbnail;
+
 function LockIcon() {
   return (
     <svg
@@ -187,12 +190,12 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
               }}
             >
               <div className="mx-auto h-16 w-16">
-                {source === 'playground' || source === 'work' ? (
+                  {source === 'playground' || source === 'work' ? (
                   <div className="relative h-full w-full overflow-hidden rounded-xl bg-slate-100 ring-1 ring-black/5">
-                    {isVideo(item.thumbnail) ? (
+                    {isVideo(getIconThumbnail(item)) ? (
                       <video
                         className="h-full w-full object-cover"
-                        src={item.thumbnail}
+                        src={getIconThumbnail(item)}
                         autoPlay
                         muted
                         loop
@@ -200,7 +203,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
                       />
                     ) : (
                       <Image
-                        src={item.thumbnail}
+                        src={getIconThumbnail(item)}
                         alt={item.title ?? item.id}
                         fill
                         sizes="64px"
@@ -229,7 +232,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
     const content = (
       <>
         <GridItemLabel title={item.title} interaction={interaction} />
-        <Tile thumbnail={item.thumbnail} title={item.title} />
+        <Tile thumbnail={getGridThumbnail(item)} title={item.title} />
       </>
     );
 

@@ -117,7 +117,7 @@ export function Window({ win, children }: Props) {
           onViewChange={(m) => setWindowView(win.id, m)}
           onBack={win.activeProjectId ? (win.id === 'work' ? returnToWorkFolder : () => returnToFolder(win.id)) : undefined}
           onForward={win.forwardProjectId ? (win.id === 'work' ? goForwardToWorkProject : () => goForwardToFolder(win.id)) : undefined}
-          showViewOptions={!win.activeProjectId}
+          showViewOptions={!win.activeProjectId || (win.id === 'about' && win.activeProjectId === 'about-4')}
         />
       </div>
     </motion.div>

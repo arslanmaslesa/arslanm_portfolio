@@ -6,12 +6,13 @@ import { WindowManagerProvider, useDesktopContext } from './WindowManager';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
 import WindowContentGrid from './WindowContentGrid';
-import ABOUT_ITEMS from '../../content/about';
+import ABOUT_ITEMS, { ABOUT_TOOLS_ITEMS } from '../../content/about';
 import PLAYGROUND_ITEMS from '../../content/playground';
 import WORK_ITEMS from '../../content/work';
 import { CaseStudyView } from './CaseStudy';
 
 const isVideo = (source: string) => /\.(mp4|webm|ogg)(?:$|\?)/i.test(source);
+const getGridThumbnail = (item: { gridThumbnail: string }) => item.gridThumbnail;
 
 const FolderItemView: React.FC<{ title: string; thumbnail: string }> = ({ title, thumbnail }) => {
   const video = isVideo(thumbnail);
@@ -134,15 +135,21 @@ const DesktopInner: React.FC = () => {
           <Window key={w.id} win={w}>
             {w.id === 'work' && w.activeProjectId ? (
               <WorkCaseStudy projectId={w.activeProjectId} />
+            ) : w.id === 'about' && w.activeProjectId === 'about-4' ? (
+              <WindowContentGrid
+                mode={w.viewMode ?? 'grid'}
+                items={ABOUT_TOOLS_ITEMS}
+                source="about"
+              />
             ) : w.id === 'about' && w.activeProjectId ? (
               (() => {
                 const item = ABOUT_ITEMS.find((entry) => entry.id === w.activeProjectId);
-                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={item.thumbnail} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
+                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={getGridThumbnail(item)} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
               })()
             ) : w.id === 'playground' && w.activeProjectId ? (
               (() => {
                 const item = PLAYGROUND_ITEMS.find((entry) => entry.id === w.activeProjectId);
-                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={item.thumbnail} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
+                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={getGridThumbnail(item)} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
               })()
             ) : w.id === 'work' || w.id === 'about' || w.id === 'playground' ? (
               <WindowContentGrid
