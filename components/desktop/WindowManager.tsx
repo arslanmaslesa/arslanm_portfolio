@@ -9,6 +9,7 @@ const ICON_POS_STORAGE_KEY = 'desktop_icon_positions_v1';
 type DesktopContextValue = DesktopState & {
   icons: IconData[];
   openWindow: (id: string, title?: string, contentType?: string) => void;
+  openWindowItem: (windowId: string, itemId: string, title: string) => void;
   closeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   moveIcon: (id: string, position: Position) => void;
@@ -18,6 +19,8 @@ type DesktopContextValue = DesktopState & {
   openWorkProject: (projectId: string, title: string) => void;
   returnToWorkFolder: () => void;
   goForwardToWorkProject: () => void;
+  returnToFolder: (windowId: string) => void;
+  goForwardToFolder: (windowId: string) => void;
 };
 
 const DesktopContext = createContext<DesktopContextValue | undefined>(undefined);
@@ -42,6 +45,10 @@ const initialState: DesktopState = {
     playground: 'grid',
   },
 };
+
+function getFolderTitle(windowId: string) {
+  return windowId === 'about' ? 'About Me' : windowId === 'playground' ? 'Playground' : 'Work';
+}
 
 function reducer(state: DesktopState, action: DesktopAction): DesktopState {
   switch (action.type) {
@@ -89,22 +96,15 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
       return { ...state, windows: [...state.windows, newWin], focusedWindowId: newWin.id, zCounter: z };
     }
 
-    case 'SET_WINDOW_VIEW': {
-      return {
-        ...state,
-        windows: state.windows.map((w) => (w.id === action.payload.id ? { ...w, viewMode: action.payload.viewMode } : w)),
-        savedViewModes: { ...(state.savedViewModes ?? {}), [action.payload.id]: action.payload.viewMode },
-      };
-    }
-    case 'OPEN_WORK_PROJECT': {
+    case 'OPEN_WINDOW_ITEM': {
       return {
         ...state,
         windows: state.windows.map((w) =>
-          w.id === 'work'
+          w.id === action.payload.windowId
             ? {
                 ...w,
                 title: action.payload.title,
-                activeProjectId: action.payload.projectId,
+                activeProjectId: action.payload.itemId,
                 forwardProjectId: undefined,
                 forwardProjectTitle: undefined,
               }
@@ -112,14 +112,22 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
         ),
       };
     }
-    case 'RETURN_TO_WORK_FOLDER': {
+
+    case 'SET_WINDOW_VIEW': {
+      return {
+        ...state,
+        windows: state.windows.map((w) => (w.id === action.payload.id ? { ...w, viewMode: action.payload.viewMode } : w)),
+        savedViewModes: { ...(state.savedViewModes ?? {}), [action.payload.id]: action.payload.viewMode },
+      };
+    }
+    case 'RETURN_TO_FOLDER': {
       return {
         ...state,
         windows: state.windows.map((w) =>
-          w.id === 'work'
+          w.id === action.payload.windowId
             ? {
                 ...w,
-                title: 'Work',
+                title: getFolderTitle(w.id),
                 forwardProjectId: w.activeProjectId,
                 forwardProjectTitle: w.title,
                 activeProjectId: undefined,
@@ -128,11 +136,11 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
         ),
       };
     }
-    case 'GO_FORWARD_TO_WORK_PROJECT': {
+    case 'GO_FORWARD_TO_FOLDER': {
       return {
         ...state,
         windows: state.windows.map((w) =>
-          w.id === 'work' && w.forwardProjectId
+          w.id === action.payload.windowId && w.forwardProjectId
             ? {
                 ...w,
                 title: w.forwardProjectTitle ?? w.forwardProjectId,
@@ -177,10 +185,13 @@ export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, dispatch] = useReducer(reducer, { ...initialState, iconPositions: {} });
 
   const openWindow = (id: string, title?: string, contentType?: string) => dispatch({ type: 'OPEN_WINDOW', payload: { id, title: title ?? id, contentType: contentType ?? id } });
+  const openWindowItem = (windowId: string, itemId: string, title: string) => dispatch({ type: 'OPEN_WINDOW_ITEM', payload: { windowId, itemId, title } });
   const setWindowView = (id: string, viewMode: 'grid' | 'icons') => dispatch({ type: 'SET_WINDOW_VIEW', payload: { id, viewMode } });
-  const openWorkProject = (projectId: string, title: string) => dispatch({ type: 'OPEN_WORK_PROJECT', payload: { projectId, title } });
-  const returnToWorkFolder = () => dispatch({ type: 'RETURN_TO_WORK_FOLDER' });
-  const goForwardToWorkProject = () => dispatch({ type: 'GO_FORWARD_TO_WORK_PROJECT' });
+  const openWorkProject = (projectId: string, title: string) => openWindowItem('work', projectId, title);
+  const returnToFolder = (windowId: string) => dispatch({ type: 'RETURN_TO_FOLDER', payload: { windowId } });
+  const goForwardToFolder = (windowId: string) => dispatch({ type: 'GO_FORWARD_TO_FOLDER', payload: { windowId } });
+  const returnToWorkFolder = () => returnToFolder('work');
+  const goForwardToWorkProject = () => goForwardToFolder('work');
   const closeWindow = (id: string) => dispatch({ type: 'CLOSE_WINDOW', payload: { id } });
   const focusWindow = (id: string) => dispatch({ type: 'FOCUS_WINDOW', payload: { id } });
   const moveIcon = (id: string, position: Position) => dispatch({ type: 'MOVE_ICON', payload: { id, position } });
@@ -191,6 +202,7 @@ export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({
     ...state,
     icons: DESKTOP_ICONS,
     openWindow,
+    openWindowItem,
     closeWindow,
     focusWindow,
     moveIcon,
@@ -200,6 +212,8 @@ export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({
     openWorkProject,
     returnToWorkFolder,
     goForwardToWorkProject,
+    returnToFolder,
+    goForwardToFolder,
   };
 
   return <DesktopContext.Provider value={value}>{children}</DesktopContext.Provider>;

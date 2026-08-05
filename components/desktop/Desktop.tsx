@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import { WindowManagerProvider, useDesktopContext } from './WindowManager';
 import DesktopIcon from './DesktopIcon';
 import Window from './Window';
@@ -9,6 +10,27 @@ import ABOUT_ITEMS from '../../content/about';
 import PLAYGROUND_ITEMS from '../../content/playground';
 import WORK_ITEMS from '../../content/work';
 import { CaseStudyView } from './CaseStudy';
+
+const isVideo = (source: string) => /\.(mp4|webm|ogg)(?:$|\?)/i.test(source);
+
+const FolderItemView: React.FC<{ title: string; thumbnail: string }> = ({ title, thumbnail }) => {
+  const video = isVideo(thumbnail);
+
+  return (
+    <div className="mx-auto flex min-h-[calc(100%-24px)] w-full max-w-4xl flex-col justify-center px-2 py-6">
+      <div className="overflow-hidden rounded-[28px] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.08),0_1px_2px_rgba(15,23,42,0.04)] ring-1 ring-black/5">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          {video ? (
+            <video className="h-full w-full object-cover" src={thumbnail} autoPlay muted loop playsInline />
+          ) : (
+            <Image src={thumbnail} alt={title} fill className="object-cover" sizes="(max-width: 768px) 92vw, 720px" />
+          )}
+        </div>
+      </div>
+      <div className="mt-5 text-lg font-medium tracking-[-0.02em] text-slate-950">{title}</div>
+    </div>
+  );
+};
 
 const WorkCaseStudy: React.FC<{ projectId: string }> = ({ projectId }) => {
   const project = WORK_ITEMS.find((item) => item.id === projectId);
@@ -112,6 +134,16 @@ const DesktopInner: React.FC = () => {
           <Window key={w.id} win={w}>
             {w.id === 'work' && w.activeProjectId ? (
               <WorkCaseStudy projectId={w.activeProjectId} />
+            ) : w.id === 'about' && w.activeProjectId ? (
+              (() => {
+                const item = ABOUT_ITEMS.find((entry) => entry.id === w.activeProjectId);
+                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={item.thumbnail} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
+              })()
+            ) : w.id === 'playground' && w.activeProjectId ? (
+              (() => {
+                const item = PLAYGROUND_ITEMS.find((entry) => entry.id === w.activeProjectId);
+                return item ? <FolderItemView title={item.title ?? item.id} thumbnail={item.thumbnail} /> : <p className="m-auto text-sm text-slate-500">This item is coming soon.</p>;
+              })()
             ) : w.id === 'work' || w.id === 'about' || w.id === 'playground' ? (
               <WindowContentGrid
                 mode={w.viewMode ?? 'grid'}

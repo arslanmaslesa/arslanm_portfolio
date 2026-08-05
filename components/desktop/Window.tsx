@@ -19,10 +19,8 @@ type Props = {
 };
 
 export function Window({ win, children }: Props) {
-  const { focusWindow, closeWindow, moveWindow, focusedWindowId, returnToWorkFolder, goForwardToWorkProject } =
+  const { focusWindow, closeWindow, moveWindow, focusedWindowId, returnToWorkFolder, goForwardToWorkProject, returnToFolder, goForwardToFolder, setWindowView } =
     useDesktopContext();
-
-  const { setWindowView } = useDesktopContext();
 
   const dragControls = useDragControls();
   const reducedMotion = useReducedMotion();
@@ -117,8 +115,8 @@ export function Window({ win, children }: Props) {
           onPointerDown={(event) => dragControls.start(event as any)}
           viewMode={win.viewMode ?? 'grid'}
           onViewChange={(m) => setWindowView(win.id, m)}
-          onBack={win.id === 'work' && win.activeProjectId ? returnToWorkFolder : undefined}
-          onForward={win.id === 'work' && win.forwardProjectId ? goForwardToWorkProject : undefined}
+          onBack={win.activeProjectId ? (win.id === 'work' ? returnToWorkFolder : () => returnToFolder(win.id)) : undefined}
+          onForward={win.forwardProjectId ? (win.id === 'work' ? goForwardToWorkProject : () => goForwardToFolder(win.id)) : undefined}
           showViewOptions={!win.activeProjectId}
         />
       </div>

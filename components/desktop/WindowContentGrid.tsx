@@ -135,7 +135,7 @@ const GridItemLabel: React.FC<{ title?: string; interaction?: GridItemState }> =
 };
 
 const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[]; source?: 'work' | 'about' | 'playground' }> = ({ mode = 'grid', items, source = 'work' }) => {
-  const { openWindow, openWorkProject } = useDesktopContext();
+  const { openWindowItem, openWorkProject } = useDesktopContext();
   const list = items ?? WORK_ITEMS;
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -144,50 +144,79 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
   if (mode === 'icons') {
     return (
       <div ref={containerRef} className="w-full flex flex-wrap gap-6 h-full items-start content-start">
-        {list.map((item) => (
-          <motion.div
-            key={item.id}
-            className="w-28 text-center cursor-grab select-none"
-            drag
-            dragMomentum={false}
-            dragConstraints={containerRef}
-            onDragStart={() => {
-              draggingRef.current = true;
-              try {
-                document.body.style.userSelect = 'none';
-                (document.body as any).style.webkitUserSelect = 'none';
-              } catch (e) {
-                /* ignore */
-              }
-            }}
-            onDragEnd={() => {
-              try {
-                document.body.style.userSelect = '';
-                (document.body as any).style.webkitUserSelect = '';
-              } catch (e) {
-                /* ignore */
-              }
-              window.setTimeout(() => {
-                draggingRef.current = false;
-              }, 50);
-            }}
-            whileTap={{ scale: reduced ? 1 : 0.98 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (draggingRef.current) return;
-              if (source === 'work') {
-                openWorkProject(item.id, item.title ?? item.id);
-                return;
-              }
-              openWindow(item.id, item.title ?? item.id, source);
-            }}
-          >
-            <div className="mx-auto h-16 w-16">
-              <Folder className="w-full h-full" color="blue" />
-            </div>
-            <div className="mt-2 text-sm text-slate-700">{item.title}</div>
-          </motion.div>
-        ))}
+        {list.map((item) => {
+          const interaction: GridItemState = item.interaction ?? 'clickable';
+          const isClickable = interaction === 'clickable';
+
+          return (
+            <motion.div
+              key={item.id}
+              className="w-28 text-center cursor-grab select-none"
+              drag
+              dragMomentum={false}
+              dragConstraints={containerRef}
+              onDragStart={() => {
+                draggingRef.current = true;
+                try {
+                  document.body.style.userSelect = 'none';
+                  (document.body as any).style.webkitUserSelect = 'none';
+                } catch (e) {
+                  /* ignore */
+                }
+              }}
+              onDragEnd={() => {
+                try {
+                  document.body.style.userSelect = '';
+                  (document.body as any).style.webkitUserSelect = '';
+                } catch (e) {
+                  /* ignore */
+                }
+                window.setTimeout(() => {
+                  draggingRef.current = false;
+                }, 50);
+              }}
+              whileTap={{ scale: isClickable && !reduced ? 0.98 : 1 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (draggingRef.current || !isClickable) return;
+                if (source === 'work') {
+                  openWorkProject(item.id, item.title ?? item.id);
+                  return;
+                }
+                openWindowItem(source, item.id, item.title ?? item.id);
+              }}
+            >
+              <div className="mx-auto h-16 w-16">
+                {source === 'playground' || source === 'work' ? (
+                  <div className="relative h-full w-full overflow-hidden rounded-xl bg-slate-100 ring-1 ring-black/5">
+                    {isVideo(item.thumbnail) ? (
+                      <video
+                        className="h-full w-full object-cover"
+                        src={item.thumbnail}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={item.thumbnail}
+                        alt={item.title ?? item.id}
+                        fill
+                        sizes="64px"
+                        className="object-cover"
+                        draggable={false}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <Folder className="w-full h-full" color="blue" />
+                )}
+              </div>
+              <div className="mt-2 text-sm text-slate-700">{item.title}</div>
+            </motion.div>
+          );
+        })}
       </div>
     );
   }
@@ -220,7 +249,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
               openWorkProject(item.id, item.title ?? item.id);
               return;
             }
-            openWindow(item.id, item.title ?? item.id, source);
+            openWindowItem(source, item.id, item.title ?? item.id);
           }}
         >
           {content}
