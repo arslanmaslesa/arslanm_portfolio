@@ -190,9 +190,9 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
               }}
             >
               <div className="mx-auto h-16 w-16">
-                  {source === 'playground' || source === 'work' ? (
+                {getIconThumbnail(item) ? (
                   <div className="relative h-full w-full overflow-hidden rounded-xl bg-slate-100 ring-1 ring-black/5">
-                    {isVideo(getIconThumbnail(item)) ? (
+                    {isVideo(getIconThumbnail(item) as string) ? (
                       <video
                         className="h-full w-full object-cover"
                         src={getIconThumbnail(item)}
@@ -203,7 +203,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
                       />
                     ) : (
                       <Image
-                        src={getIconThumbnail(item)}
+                        src={getIconThumbnail(item) as string}
                         alt={item.title ?? item.id}
                         fill
                         sizes="64px"

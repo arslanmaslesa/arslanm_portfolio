@@ -4,6 +4,6 @@ export type GridItem = {
   id: string;
   title?: string;
   gridThumbnail: string;
-  iconThumbnail: string;
+  iconThumbnail?: string;
   interaction?: GridItemState;
 };
