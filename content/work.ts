@@ -32,7 +32,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'intro',
           title: 'Digital Agency Website',
-          description: 'Project 1 explores a product experience focused on clarity, efficiency, and meaningful interaction design.',
+          description: 'Well BP is a digital consulting agency that helps businesses grow through web design, SEO, digital marketing, and strategic consulting, creating effective digital experiences that drive results.',
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Digital Product' },
@@ -43,13 +43,13 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Challenge',
-          text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
+          text: 'The existing website presented valuable services but lacked a clear structure, making it difficult for visitors to understand the agency\'s offerings and navigate the experience with confidence.',
         },
         { type: 'device', image: '/work/well/services.png', alt: 'Project 1 product preview' },
         {
           type: 'narrative',
           label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
+          text: 'I analyzed the existing website, researched competitors, mapped user flows, and redesigned the experience with a stronger information architecture, clearer messaging, and a modern visual system.',
         },
         {
           type: 'image-grid',
@@ -65,7 +65,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Result',
-          text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+          text: 'The redesign delivers a cleaner, more intuitive experience that highlights Well BP\'s services, improves navigation, and better communicates the agency\'s expertise and value.',
         },
         { type: 'device', image: '/work/well/work.png', alt: 'Project 1 product preview' },
         { type: 'device', image: '/work/well/testimonial.png', alt: 'Project 1 product preview' },
@@ -172,7 +172,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'intro',
           title: 'Gift Card Platform',
-          description: 'Project 3 highlights a digital experience shaped around product storytelling, user clarity, and seamless interaction.',
+          description: 'Kupi Poklon is a gift card platform that enables customers to purchase digital gift cards while providing businesses and shopping centers with custom gift card solutions.',
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Website' },
@@ -183,18 +183,18 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Challenge',
-          text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
+          text: 'The existing website didn\'t clearly communicate the platform\'s offerings, making it difficult for users and business clients to quickly understand its value.',
         },
         {
           type: 'narrative',
           label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
+          text: 'I reviewed the existing experience, restructured the content, and redesigned the interface with clearer navigation, improved hierarchy, and a more modern visual identity.',
         },
         
         {
           type: 'narrative',
           label: 'Result',
-          text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+          text: 'The redesign creates a cleaner, more engaging experience that better showcases Kupi Poklon\'s services and makes the platform easier to understand and explore.',
         },
         { type: 'device', image: '/work/poklon/services.png', alt: 'Project 3 product preview' },
         { type: 'device', image: '/work/poklon/steps.png', alt: 'Project 3 product preview' },
@@ -213,7 +213,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'intro',
           title: 'AI System Design',
-          description: 'Project 4 presents a thoughtful interface system designed to support a broader product strategy and polished user journeys.',
+          description: 'Universe is an AI-powered concept designed to unify digital and physical services into one intelligent platform, simplifying complex workflows through a seamless, user-centered experience.',
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Product Experience' },
@@ -234,7 +234,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Challenge',
-          text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
+          text: 'The goal was to transform a highly complex AI ecosystem into a clear, intuitive concept that stakeholders could easily understand, evaluate, and envision.',
         },
         {
           type: 'image-grid',
@@ -249,7 +249,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
+          text: 'I explored user journeys, organized complex features into a logical structure, and designed a simple, cohesive interface that clearly communicated the product vision.',
         },
         {
           type: 'image-grid',
@@ -264,7 +264,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Result',
-          text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+          text: 'The final concept successfully translated a sophisticated AI system into an accessible product experience, making it easier for stakeholders to understand its value and future potential.',
         },
         {
           type: 'image-grid',
@@ -294,7 +294,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'intro',
           title: 'Luxury Restaurant',
-          description: 'Project 5 frames a product concept with a strong focus on user needs, visual clarity, and practical usability.',
+          description: 'PitaBoom is a luxury restaurant website designed to showcase the brand through a refined digital experience that reflects its premium identity and menu.',
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Mobile App' },
@@ -305,7 +305,7 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Challenge',
-          text: 'Describe the user problem, the product context, and the opportunity this project set out to solve.',
+          text: 'The goal was to create a modern website that balanced elegant visuals with intuitive navigation while reinforcing the restaurant\'s premium brand.',
         },
         {
           type: 'image-grid',
@@ -320,13 +320,13 @@ export const WORK_ITEMS: WorkItem[] = [
         {
           type: 'narrative',
           label: 'Process',
-          text: 'Document the research, exploration, collaboration, and decisions that shaped the final direction.',
+          text: 'I designed a clean, sophisticated interface with strong visual hierarchy, refined typography, and an experience focused on showcasing the restaurant and its offerings.',
         },
         
         {
           type: 'narrative',
           label: 'Result',
-          text: 'Summarise the outcome, what shipped, and any results or learnings that matter to the story.',
+          text: 'The final design delivers a premium online experience that strengthens the brand identity, improves usability, and encourages visitors to explore the menu and restaurant.',
         },
         { type: 'device', image: '/work/pita/description.png', alt: 'Project 5 product preview' },
         { type: 'device', image: '/work/pita/menu.png', alt: 'Project 5 product preview' },
