@@ -35,8 +35,8 @@ export const WORK_ITEMS: WorkItem[] = [
           description: 'Well BP is a digital consulting agency that helps businesses grow through web design, SEO, digital marketing, and strategic consulting, creating effective digital experiences that drive results.',
           info: [
             { label: 'Role', value: 'Product Designer' },
-            { label: 'Project Type', value: 'Digital Product' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Project Type', value: 'Website' },
+            { label: 'Duration', value: '6 weeks' },
           ],
         },
         { type: 'device', image: '/work/well/hero.png', alt: 'Project 1 product preview' },
@@ -88,7 +88,7 @@ export const WORK_ITEMS: WorkItem[] = [
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'App & Website' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Duration', value: '8 months' },
           ],
         },
         { 
@@ -176,7 +176,7 @@ export const WORK_ITEMS: WorkItem[] = [
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Website' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Duration', value: '4 weeks' },
           ],
         },
         { type: 'device', image: '/work/poklon/hero.png', alt: 'Project 3 product preview' },
@@ -217,7 +217,7 @@ export const WORK_ITEMS: WorkItem[] = [
           info: [
             { label: 'Role', value: 'Product Designer' },
             { label: 'Project Type', value: 'Product Experience' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Duration', value: '4 weeks' },
           ],
         },
         { 
@@ -297,8 +297,8 @@ export const WORK_ITEMS: WorkItem[] = [
           description: 'PitaBoom is a luxury restaurant website designed to showcase the brand through a refined digital experience that reflects its premium identity and menu.',
           info: [
             { label: 'Role', value: 'Product Designer' },
-            { label: 'Project Type', value: 'Mobile App' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Project Type', value: 'Website' },
+            { label: 'Duration', value: '4 weeks' },
           ],
         },
         { type: 'device', image: '/work/pita/hero.png', alt: 'Project 5 product preview' },
@@ -349,8 +349,8 @@ export const WORK_ITEMS: WorkItem[] = [
           description: 'Project 6 captures a design direction that blends storytelling, usability, and polished visual execution.',
           info: [
             { label: 'Role', value: 'Product Designer' },
-            { label: 'Project Type', value: 'Brand Experience' },
-            { label: 'Timeline', value: 'Add project dates' },
+            { label: 'Project Type', value: 'Website' },
+            { label: 'Duration', value: '2 weeks' },
           ],
         },
         { type: 'device', image: '/work/device.png', alt: 'Project 6 product preview' },
