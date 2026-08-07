@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+@media (max-width: 767px) {
+  .desktop-icon {
+    top: 14px;
+    transform: none !important;
+  }
+
+  .desktop-icon[data-desktop-icon="work"] {
+    left: calc(16.6667% - 40px);
+  }
+
+  .desktop-icon[data-desktop-icon="playground"] {
+    left: calc(50% - 40px);
+  }
+
+  .desktop-icon[data-desktop-icon="about"] {
+    left: calc(83.3333% - 40px);
+  }
+}

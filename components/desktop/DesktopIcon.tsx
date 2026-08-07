@@ -12,6 +12,15 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
   const reduced = useReducedMotion();
   const { iconPositions, moveIcon, openWindow, selectIcon, selectedIconId } = useDesktopContext();
   const pos = iconPositions[data.id] ?? data.defaultPosition;
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateMobileState = () => setIsMobile(mediaQuery.matches);
+    updateMobileState();
+    mediaQuery.addEventListener('change', updateMobileState);
+    return () => mediaQuery.removeEventListener('change', updateMobileState);
+  }, []);
 
   const draggingRef = React.useRef(false);
 
@@ -64,18 +73,20 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
     <motion.div
       role="button"
       aria-label={data.label}
+      data-desktop-icon={data.id}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
       initial={false}
       animate={{ x: pos.x, y: pos.y }}
-      drag
+      transition={isMobile ? { duration: 0 } : undefined}
+      drag={!isMobile}
       onDragStart={handleDragStart}
       dragMomentum={false}
       onDragEnd={handleDragEnd}
       whileTap={{ scale: reduced ? 1 : 0.98 }}
-      className="absolute w-19 cursor-grab text-center focus:outline-none desktop-icon max-md:w-20"
+      className="absolute w-19 cursor-grab text-center focus:outline-none desktop-icon max-md:w-20 max-md:cursor-pointer"
       style={{ zIndex }}
     >
       <div className="flex flex-col items-center select-none">

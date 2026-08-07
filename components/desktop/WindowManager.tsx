@@ -35,8 +35,10 @@ function buildMobileIconPositions(): Record<string, Position> {
   const width = typeof window === 'undefined' ? 390 : window.innerWidth;
   const canvasWidth = Math.max(width - 48, 240);
   const iconWidth = 80;
-  const gap = 24;
-  const startX = Math.max(0, Math.round((canvasWidth - iconWidth * DESKTOP_ICONS.length - gap * (DESKTOP_ICONS.length - 1)) / 2));
+  const availableGap = Math.floor((canvasWidth - iconWidth * DESKTOP_ICONS.length) / (DESKTOP_ICONS.length - 1));
+  const gap = Math.max(12, Math.min(36, availableGap));
+  const rowWidth = iconWidth * DESKTOP_ICONS.length + gap * (DESKTOP_ICONS.length - 1);
+  const startX = Math.max(0, Math.round((canvasWidth - rowWidth) / 2));
 
   return Object.fromEntries(
     DESKTOP_ICONS.map((icon, index) => [
