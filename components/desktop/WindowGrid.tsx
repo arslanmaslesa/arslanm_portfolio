@@ -8,9 +8,6 @@ type Props = {
   className?: string;
 };
 
-const LARGE_COLUMN = "460px";
-const SMALL_COLUMN = "304px";
-
 export const WindowGrid: React.FC<Props> = ({
   children,
   gap = 20,
@@ -49,12 +46,14 @@ export const WindowGrid: React.FC<Props> = ({
       {rows.map(({ rowIndex, isFlipped, items: rowItems }) => (
         <div
           key={rowIndex}
+          className={
+            isFlipped
+              ? "grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.513fr)]"
+              : "grid grid-cols-1 sm:grid-cols-[minmax(0,1.513fr)_minmax(0,1fr)]"
+          }
           style={{
-            display: "grid",
-            gridTemplateColumns: isFlipped
-              ? `${SMALL_COLUMN} ${LARGE_COLUMN}`
-              : `${LARGE_COLUMN} ${SMALL_COLUMN}`,
             columnGap: gapValue,
+            rowGap: gapValue,
             alignItems: "start",
           }}
         >

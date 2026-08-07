@@ -175,8 +175,8 @@ export function WindowToolbar({
   }, [open]);
   return (
     <header className="cursor-default" onPointerDown={onPointerDown}>
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between gap-3 max-md:gap-1">
+        <div className="flex min-w-0 items-center gap-1">
           <div
             className={navigationSurfaceClass}
             onPointerDown={(event) => event.stopPropagation()}
@@ -192,13 +192,13 @@ export function WindowToolbar({
             </ToolbarButton>
           </div>
 
-          <span className="ml-3 tracking-[-0.01em] font-medium text-black">
+          <span className="ml-3 truncate tracking-[-0.01em] font-medium text-black max-md:ml-2">
             {title}
           </span>
         </div>
 
         <div
-          className="flex items-center gap-3"
+          className="flex shrink-0 items-center gap-3 max-md:gap-1"
           onPointerDown={(event) => event.stopPropagation()}
         >
           {showViewOptions && <div className="relative" ref={containerRef}>

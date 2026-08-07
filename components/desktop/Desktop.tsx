@@ -48,11 +48,11 @@ const DesktopInner: React.FC = () => {
   // static layout — no dynamic z-index switching
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f7f7f7] text-slate-950">
-        <div className="absolute inset-0 pointer-events-none z-10">
-          <div className="absolute top-20 left-[66.666%] -translate-x-1/2 w-[328px] text-slate-900 pointer-events-auto z-30">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#f7f7f7] text-slate-950 max-md:pt-6">
+        <div className="pointer-events-none absolute inset-0 z-10 max-md:relative max-md:inset-auto max-md:px-6">
+          <div className="pointer-events-auto absolute top-20 left-[66.666%] z-30 w-[328px] -translate-x-1/2 text-slate-900 max-md:static max-md:w-full max-md:translate-x-0 max-md:pt-8">
           <div className="text-[1.25rem] font-medium tracking-[-0.01em] text-slate-950">Hi I’m Arslan.</div>
-          <p className="mt-16 text-base leading-[1.6] text-slate-600">I’m a Product Designer based in Sarajevo. I’ve been obsessed with pixel perfection for the past 4 years.</p>
+          <p className="mt-16 text-base leading-[1.6] text-slate-600 max-md:mt-6">I’m a Product Designer based in Sarajevo. I’ve been obsessed with pixel perfection for the past 4 years.</p>
           <p className="mt-7 text-base leading-[1.6] text-slate-600">
             You can keep up with me on{' '}
             <a
@@ -92,7 +92,7 @@ const DesktopInner: React.FC = () => {
             </a>.
           </p>
 
-          <div className="mt-16 text-slate-500">
+          <div className="mt-16 text-slate-500 max-md:mt-10">
             <div className="text-[0.75rem] font-normal uppercase tracking-[0.08em] text-slate-400">Experience</div>
             <div className="mt-7 grid gap-y-7 text-slate-950">
               <div className="flex w-full items-start justify-between gap-x-8">
@@ -122,7 +122,7 @@ const DesktopInner: React.FC = () => {
       </div>
 
       <div
-        className="relative h-screen"
+        className="relative h-screen max-md:mx-6 max-md:mt-12 max-md:h-28"
         onClick={() => selectIcon(null)}
         role="application"
         aria-label="Desktop"

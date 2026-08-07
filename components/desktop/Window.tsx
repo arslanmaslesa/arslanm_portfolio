@@ -25,6 +25,15 @@ export function Window({ win, children }: Props) {
   const dragControls = useDragControls();
   const reducedMotion = useReducedMotion();
   const windowRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateMobileState = () => setIsMobile(mediaQuery.matches);
+    updateMobileState();
+    mediaQuery.addEventListener('change', updateMobileState);
+    return () => mediaQuery.removeEventListener('change', updateMobileState);
+  }, []);
 
   useEffect(() => {
     if (focusedWindowId === win.id) {
@@ -73,7 +82,7 @@ export function Window({ win, children }: Props) {
       exit="exit"
       custom={reducedMotion}
       variants={windowVariants}
-      drag
+      drag={!isMobile}
       dragMomentum={false}
       dragListener={false}
       dragControls={dragControls}
@@ -88,17 +97,16 @@ export function Window({ win, children }: Props) {
       }}
       style={
         {
-          x: win.position.x,
-          y: win.position.y,
+          ...(isMobile ? { inset: 8 } : { x: win.position.x, y: win.position.y }),
           zIndex: win.zIndex,
-          position: "absolute",
+          position: isMobile ? "fixed" : "absolute",
         } as any
       }
-      className="relative h-[min(92vh,540px)] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px]"
+      className="relative h-[min(92vh,540px)] w-[min(92vw,800px)] overflow-hidden rounded-[28px] bg-white/80 shadow-[0_4px_64px_rgba(0,0,0,0.16)] backdrop-blur-[44px] max-md:h-[calc(100dvh-16px)] max-md:w-[calc(100vw-16px)] max-md:rounded-[20px]"
     >
       <main
         data-window-scroll
-        className="absolute inset-0 z-0 overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200 flex"
+        className="absolute inset-0 z-0 flex overflow-y-auto px-3 pb-3 pt-[60px] text-slate-700 scrollbar-thin scrollbar-thumb-slate-200 max-md:pt-[56px]"
       >
         <div className="flex-1 min-h-0">{children}</div>
       </main>

@@ -85,7 +85,7 @@ const Tile: React.FC<TileProps> = ({ thumbnail, title }) => {
 
   return (
     <div
-      className="relative h-80 w-full overflow-hidden rounded-2xl bg-slate-100"
+      className="relative aspect-square h-auto w-full overflow-hidden rounded-2xl bg-slate-100 sm:aspect-auto sm:h-80"
       aria-label={title ?? "work thumbnail"}
     >
       {!isLoaded && (
@@ -146,7 +146,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
 
   if (mode === 'icons') {
     return (
-      <div ref={containerRef} className="w-full flex flex-wrap gap-6 h-full items-start content-start">
+      <div ref={containerRef} className="grid h-full w-full grid-cols-3 content-start items-start gap-x-2 gap-y-5 sm:flex sm:flex-wrap sm:gap-6">
         {list.map((item) => {
           const interaction: GridItemState = item.interaction ?? 'clickable';
           const isClickable = interaction === 'clickable';
@@ -154,7 +154,7 @@ const WindowContentGrid: React.FC<{ mode?: 'grid' | 'icons'; items?: GridItem[];
           return (
             <motion.div
               key={item.id}
-              className="w-28 text-center cursor-grab select-none"
+              className="w-full cursor-grab select-none text-center sm:w-28"
               drag
               dragMomentum={false}
               dragConstraints={containerRef}

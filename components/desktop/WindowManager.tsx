@@ -31,6 +31,21 @@ function buildInitialIconPositions(): Record<string, Position> {
   return map;
 }
 
+function buildMobileIconPositions(): Record<string, Position> {
+  const width = typeof window === 'undefined' ? 390 : window.innerWidth;
+  const canvasWidth = Math.max(width - 48, 240);
+  const iconWidth = 80;
+  const gap = 24;
+  const startX = Math.max(0, Math.round((canvasWidth - iconWidth * DESKTOP_ICONS.length - gap * (DESKTOP_ICONS.length - 1)) / 2));
+
+  return Object.fromEntries(
+    DESKTOP_ICONS.map((icon, index) => [
+      icon.id,
+      { x: startX + index * (iconWidth + gap), y: 14 },
+    ]),
+  );
+}
+
 const initialState: DesktopState = {
   windows: [],
   iconPositions: buildInitialIconPositions(),
@@ -170,6 +185,9 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
       const newPositions = { ...state.iconPositions, [action.payload.id]: action.payload.position };
       return { ...state, iconPositions: newPositions };
     }
+    case 'SET_ICON_POSITIONS': {
+      return { ...state, iconPositions: action.payload };
+    }
     case 'MOVE_WINDOW': {
       return { ...state, windows: state.windows.map((w) => (w.id === action.payload.id ? { ...w, position: action.payload.position } : w)) };
     }
@@ -183,6 +201,20 @@ function reducer(state: DesktopState, action: DesktopAction): DesktopState {
 
 export const WindowManagerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, { ...initialState, iconPositions: {} });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateIconLayout = () => {
+      dispatch({
+        type: 'SET_ICON_POSITIONS',
+        payload: mediaQuery.matches ? buildMobileIconPositions() : buildInitialIconPositions(),
+      });
+    };
+
+    updateIconLayout();
+    mediaQuery.addEventListener('change', updateIconLayout);
+    return () => mediaQuery.removeEventListener('change', updateIconLayout);
+  }, []);
 
   const openWindow = (id: string, title?: string, contentType?: string) => dispatch({ type: 'OPEN_WINDOW', payload: { id, title: title ?? id, contentType: contentType ?? id } });
   const openWindowItem = (windowId: string, itemId: string, title: string) => dispatch({ type: 'OPEN_WINDOW_ITEM', payload: { windowId, itemId, title } });

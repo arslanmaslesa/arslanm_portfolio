@@ -75,7 +75,7 @@ export const DesktopIcon: React.FC<Props> = ({ data, zIndex = 40 }) => {
       dragMomentum={false}
       onDragEnd={handleDragEnd}
       whileTap={{ scale: reduced ? 1 : 0.98 }}
-      className="absolute w-19 text-center cursor-grab focus:outline-none desktop-icon"
+      className="absolute w-19 cursor-grab text-center focus:outline-none desktop-icon max-md:w-20"
       style={{ zIndex }}
     >
       <div className="flex flex-col items-center select-none">

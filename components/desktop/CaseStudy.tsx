@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import type { CSSProperties } from 'react';
 import type { CaseStudy, CaseStudyImage, CaseStudyModule } from '../../content/work';
 
 type Props = {
@@ -20,23 +21,21 @@ function InfoList({ items }: { items: Array<{ label: string; value: string }> })
 
 function Device({ image, alt }: { image: string; alt: string }) {
   return (
-    <div className="flex justify-center my-20">
-      <div className="w-full max-w-[620px] rounded-[22px] bg-white shadow-[0_18px_35px_rgba(15,23,42,0.16),0_4px_10px_rgba(15,23,42,0.08)]">
-        <Image
-          className="h-auto w-full rounded-[16px]"
-          src={image}
-          alt={alt}
-          width={1240}
-          height={720}
-        />
-      </div>
+    <div className="my-10 flex justify-center sm:my-20">
+      <Image
+        className="h-auto w-full max-w-[620px] rounded-[8px] shadow-[0_18px_35px_rgba(15,23,42,0.16),0_4px_10px_rgba(15,23,42,0.08)] sm:rounded-[16px]"
+        src={image}
+        alt={alt}
+        width={1240}
+        height={720}
+      />
     </div>
   );
 }
 
 function Narrative({ label, text }: { label: string; text: string }) {
   return (
-    <section className="grid sm:grid-cols-2 gap-3 my-20">
+    <section className="my-10 grid gap-3 sm:my-20 sm:grid-cols-2">
       <h3 className="font-semibold tracking-[-0.02em] text-slate-950">{label}</h3>
       <p className="leading-6 text-slate-700 sm:text-base sm:leading-7">{text}</p>
     </section>
@@ -63,8 +62,8 @@ function ImageGrid({ rows }: Extract<CaseStudyModule, { type: 'image-grid' }>) {
       {rows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="grid gap-3"
-          style={{ gridTemplateColumns: `repeat(${row.columns.length}, minmax(0, 1fr))` }}
+          className="grid grid-cols-1 gap-3 sm:grid-cols-[repeat(var(--case-study-grid-columns),minmax(0,1fr))]"
+          style={{ '--case-study-grid-columns': row.columns.length } as CSSProperties}
         >
           {row.columns.map((image) => <GridImage key={image.src} image={image} />)}
         </div>
@@ -77,8 +76,8 @@ function CaseStudyModuleView({ module }: { module: CaseStudyModule }) {
   switch (module.type) {
     case 'intro':
       return (
-        <section className="grid grid-cols-2 gap-3">
-          <h2 className="w-[200px] font-semibold leading-7 tracking-[-0.01em] text-slate-950 text-[20px]">
+        <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-3">
+          <h2 className="w-full font-semibold leading-7 tracking-[-0.01em] text-[20px] text-slate-950 sm:w-[200px]">
             {module.title}
           </h2>
           <div>
@@ -98,7 +97,7 @@ function CaseStudyModuleView({ module }: { module: CaseStudyModule }) {
 
 export function CaseStudyView({ caseStudy }: Props) {
   return (
-    <article className="w-full px-21 py-10">
+    <article className="w-full px-5 py-8 sm:px-21 sm:py-10">
       {caseStudy.modules.map((module, index) => <CaseStudyModuleView key={index} module={module} />)}
     </article>
   );

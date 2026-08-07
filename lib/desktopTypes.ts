@@ -35,6 +35,7 @@ export type DesktopAction =
   | { type: 'CLOSE_WINDOW'; payload: { id: string } }
   | { type: 'FOCUS_WINDOW'; payload: { id: string } }
   | { type: 'MOVE_ICON'; payload: { id: string; position: Position } }
+  | { type: 'SET_ICON_POSITIONS'; payload: Record<string, Position> }
   | { type: 'MOVE_WINDOW'; payload: { id: string; position: Position } }
   | { type: 'SELECT_ICON'; payload: { id: string | null } }
   | { type: 'SET_WINDOW_VIEW'; payload: { id: string; viewMode: 'grid' | 'icons' } }
